@@ -11,9 +11,9 @@ class BaseSearch {
 public:
     BaseSearch(const std::string &s): text(s) {}
     BaseSearch() = delete;
-    virtual size_t search(const std::string& pat) = 0;
+    virtual size_t search(const std::string& pat);
 private:
-    std::string text;
+    const std::string text;
     // 预处理
     virtual void pre_proc() {}
 };
