@@ -22,18 +22,22 @@ public:
         this->tourist = tourist;
         this->start = start;
         this->mod = mod;
-        if (tourist < 0) {std::cerr << "Number of tourists less than 1?"; exit(-1);}
         makeList();
     }
-    int die_one();
+
+    // 整体运行
     void run();
+    // 现实剩余者
     void show_remains();
     ~JosephRing();
 private:
     int tourist, start, mod, remains;
     int dead;   //死亡数目
+    // 根据信息构造环状链表
+    // 只应该在构造函数使用
     void makeList();
-
+    // 杀一个人
+    int die_one();
     node* curnode, *prenode;
     node* min;
 };
