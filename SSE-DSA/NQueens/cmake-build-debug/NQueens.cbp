@@ -80,6 +80,12 @@
 				</MakeCommands>
 			</Target>
 		</Build>
+		<Unit filename="/Users/fuasahi/ClionProjects/NQueens/NQueen.cpp">
+			<Option target="NQueens"/>
+		</Unit>
+		<Unit filename="/Users/fuasahi/ClionProjects/NQueens/NQueen.h">
+			<Option target="NQueens"/>
+		</Unit>
 		<Unit filename="/Users/fuasahi/ClionProjects/NQueens/main.cpp">
 			<Option target="NQueens"/>
 		</Unit>

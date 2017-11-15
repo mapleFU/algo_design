@@ -1,5 +1,6 @@
 file(REMOVE_RECURSE
   "CMakeFiles/NQueens.dir/main.cpp.o"
+  "CMakeFiles/NQueens.dir/NQueen.cpp.o"
   "NQueens.pdb"
   "NQueens"
 )

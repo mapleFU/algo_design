@@ -6,6 +6,16 @@
 
 #IncludeRegexTransform: 
 
+/Users/fuasahi/ClionProjects/NQueens/NQueen.cpp
+NQueen.h
+/Users/fuasahi/ClionProjects/NQueens/NQueen.h
+
+/Users/fuasahi/ClionProjects/NQueens/NQueen.h
+vector
+-
+iostream
+-
+
 /Users/fuasahi/ClionProjects/NQueens/main.cpp
 iostream
 -
@@ -15,4 +25,6 @@ vector
 -
 cmath
 -
+NQueen.h
+/Users/fuasahi/ClionProjects/NQueens/NQueen.h
 

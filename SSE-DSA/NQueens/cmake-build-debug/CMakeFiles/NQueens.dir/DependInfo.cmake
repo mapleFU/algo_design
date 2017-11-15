@@ -4,6 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
+  "/Users/fuasahi/ClionProjects/NQueens/NQueen.cpp" "/Users/fuasahi/ClionProjects/NQueens/cmake-build-debug/CMakeFiles/NQueens.dir/NQueen.cpp.o"
   "/Users/fuasahi/ClionProjects/NQueens/main.cpp" "/Users/fuasahi/ClionProjects/NQueens/cmake-build-debug/CMakeFiles/NQueens.dir/main.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "AppleClang")

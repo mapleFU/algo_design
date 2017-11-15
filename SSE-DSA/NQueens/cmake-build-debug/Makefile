@@ -123,6 +123,33 @@ NQueens/fast:
 	$(MAKE) -f CMakeFiles/NQueens.dir/build.make CMakeFiles/NQueens.dir/build
 .PHONY : NQueens/fast
 
+NQueen.o: NQueen.cpp.o
+
+.PHONY : NQueen.o
+
+# target to build an object file
+NQueen.cpp.o:
+	$(MAKE) -f CMakeFiles/NQueens.dir/build.make CMakeFiles/NQueens.dir/NQueen.cpp.o
+.PHONY : NQueen.cpp.o
+
+NQueen.i: NQueen.cpp.i
+
+.PHONY : NQueen.i
+
+# target to preprocess a source file
+NQueen.cpp.i:
+	$(MAKE) -f CMakeFiles/NQueens.dir/build.make CMakeFiles/NQueens.dir/NQueen.cpp.i
+.PHONY : NQueen.cpp.i
+
+NQueen.s: NQueen.cpp.s
+
+.PHONY : NQueen.s
+
+# target to generate assembly for a file
+NQueen.cpp.s:
+	$(MAKE) -f CMakeFiles/NQueens.dir/build.make CMakeFiles/NQueens.dir/NQueen.cpp.s
+.PHONY : NQueen.cpp.s
+
 main.o: main.cpp.o
 
 .PHONY : main.o
@@ -159,6 +186,9 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
 	@echo "... NQueens"
+	@echo "... NQueen.o"
+	@echo "... NQueen.i"
+	@echo "... NQueen.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
