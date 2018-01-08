@@ -1,89 +1,58 @@
 #include <iostream>
 #include "Graph.h"
-#include "Prim.h"
-#include <functional>
-#include <map>
+#include "Mst/Prim.h"
+#include "Mst/Kruskal.h"
+#include "Mst/Mst.h"
 
-/*
- * A: 创建电网顶点
- */
-Graph* createVertax() {
-    std::cout << "请输入顶点的个数：";
-    unsigned int vertaxs;
-    std::cin >> vertaxs;
-    auto graph = new Graph(vertaxs);
-    graph->addVertaxName(std::cin);
-    return graph;
-}
-
-/*
- * 添加边
- */
-void createEdges(Graph* pgraph) {
-    if (pgraph == nullptr) {
-        std::cout << "你应该先创建顶点！";
-        return;
-    }
-    pgraph->addEdges(std::cin);
-}
-
-/*
- * 建立最小生成树
- */
-Prim* buildMft(Graph* pgraph) {
-    if (pgraph == nullptr) {
-        std::cout << "你应该先创建顶点！";
-        return nullptr;
-    } else if (!pgraph->edgeAdded) {
-        std::cout << "你应该先创建边！";
-        return nullptr;
-    }
-    auto pprim = new Prim(*pgraph);
-    std::cout << "请输入起始顶点\n";
-    std::string start;
-    std::cin >> start;
-    pprim->run(start);
-    return pprim;
-}
 /*
  * 显示最小生成树
  */
-void showMft(Prim* pprim) {
-    if (pprim == nullptr) {
+void showMft(Mst* mst) {
+    if (mst == nullptr) {
         std::cout << "你应该先把最小生成树做出来，试试C\n";
         return;
     }
-    pprim->show();
+    mst->show();
 }
 
-void purge(Graph* pgraph, Prim* pprim);
+void purge(Graph* pgraph, Mst* pprim);
 int main() {
+    std::cout << "------------------------------\n"
+            "**\t\t 电网造价模拟系统 \t\t**\n"
+            "------------------------------\n"
+            "**\t\tA——创建电网顶点\t\t**\n"
+            "**\t\tB——添加电网的边\t\t**\n"
+            "**\t\tC——构造最小生成树\t\t**\n"
+            "**\t\tD——显示最小生成树\t\t**\n"
+            "**\t\tE——退出程序\t\t\t**\n"
+            "------------------------------\n";
+
     std::string op;     //操作
 
     Graph* pgraph = nullptr;
-    Prim* pprim = nullptr;
+    Mst *mst = nullptr;
     std::cout << "请选择操作\n";
     while (std::cin >> op) {
         if (op[0] == 'A') {
             if (pgraph) delete pgraph;
-            pgraph = createVertax();
+            pgraph = Graph::createVertax();
         } else if (op[0] == 'B') {
-            createEdges(pgraph);
+            Graph::createEdges(pgraph);
         } else if (op[0] == 'C') {
-            pprim = buildMft(pgraph);
+            mst = Mst::buildMst(pgraph);
         } else if (op[0] == 'D') {
-            showMft(pprim);
+            showMft(mst);
         } else if (op[0] == 'E') {
             break;
         }
         std::cout << "请选择操作\n";
     }
 
-    purge(pgraph, pprim);
+    purge(pgraph, mst);
     return 0;
 }
 
-void purge(Graph* pgraph, Prim* pprim) {
+void purge(Graph* pgraph, Mst* pprim) {
     if (pprim)
         delete pprim;
     if (pgraph)

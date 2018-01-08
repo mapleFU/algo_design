@@ -27,6 +27,7 @@ void FmailyTree::add_child(Member *father, const std::string &name) {
 
 void FmailyTree::create_family() {
     std::string father_name; // 祖先的名称
+    std::cout << "选择要建立家族的人的姓名\n";
     std::cin >> father_name;
 
 //    auto father_ptr = ancestor->find(father_name);
@@ -40,18 +41,30 @@ void FmailyTree::create_family() {
         std::cout << father_ptr->name << "已经存在家庭\n";
     }
 
+    std::cout << "请输入" <<  father_name << "的子女人数";
     int family_members;
     std::cin >> family_members;
+
+    std::cout << "依次输入儿女姓名: ";
+    std::vector<std::string> childs;
     for (int i = 0; i < family_members; ++i) {
         std::string cur_name;
         std::cin >> cur_name;
         father_ptr->add_child(cur_name);
+        childs.push_back(cur_name);
     }
 
+    // output
+    std::cout << father_name <<"的子女是：";
+    for (const auto&s: childs) {
+        std::cout << s << ' ';
+    }
+    std::cout << '\n';
 }
 
 void FmailyTree::add_children() {
     std::string father_name;
+    std::cout << "请选择要添加儿女的人的姓名\n";
     std::cin >> father_name;
 
     auto father_ptr = find(ancestor, father_name);
@@ -61,12 +74,15 @@ void FmailyTree::add_children() {
         return;
     }
 
+    std::cout << "请填入" <<  father_name << "新添加的儿女的姓名\n";
     std::string new_child;
     std::cin >> new_child;
     father_ptr->add_child(new_child);
+    std::cout << father_name << "新添加的儿女的姓名是" << new_child;
 }
 
 void FmailyTree::modify_name() {
+    std::cout << "请输入要更名的人目前的姓名\n";
     std::string processing_name;
     std::cin >> processing_name;
     auto processing_ptr = find(ancestor, processing_name);
@@ -74,17 +90,20 @@ void FmailyTree::modify_name() {
         std::cout << "要更名的成员不存在" << std::endl;
         return;
     }
-
+    std::cout << "请输入要更名的人("<<processing_name<<")目前的姓名\n";
     std::string new_name;
     std::cin >> new_name;
 
+    std::cout <<processing_name<<"已经更名为"<<new_name;
     processing_ptr->change_name(new_name);
 }
 
 void FmailyTree::break_family() {
     std::string processing_name;
+    std::cout << "请输入要解散家族的人的姓名";
     std::cin >> processing_name;
-//    auto processing_ptr = ancestor->find(processing_name);
+    std::cout << "要解散家族的人的姓名是: " << processing_name;
+
     auto processing_ptr = find(ancestor, processing_name);
     if (processing_ptr == nullptr) {
         std::cout << "要解散家庭的成员不存在" << std::endl;
@@ -103,8 +122,10 @@ void FmailyTree::break_family() {
 
 FmailyTree *FmailyTree::build_family_tree() {
     std::string ances_name;
+    std::cout << "请输入祖先的姓名\n";
     std::cin >> ances_name;
     auto family_tree = new FmailyTree(ances_name);
+    std::cout << "此家谱的祖先是" << family_tree->ancestor->name << '\n';
     return family_tree;
 }
 

@@ -31,7 +31,7 @@ void WordRecord::output_line_records(int line) {
     }
 }
 
-void WordRecord::show_all() {
+void WordRecord::show_all() const {
     int line = 0;
     for (int i = 0; i < word_record.size(); ++i) {
         if (word_record[i].line != line) {

@@ -36,8 +36,8 @@ public:
      * 加入必定有序的记录
      */
     void push_back_record(const Record& record) {word_record.push_back(record);}
-    int counts() { return word_record.size();}
-    void show_all();
+    int counts() const { return word_record.size();}
+    void show_all() const ;
 };
 
 

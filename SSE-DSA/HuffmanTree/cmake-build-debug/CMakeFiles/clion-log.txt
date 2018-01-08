@@ -1,4 +1,0 @@
-/Applications/CLion.app/Contents/bin/cmake/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /Users/fuasahi/C++程序设计/Algo_design/SSE_DSA/HuffmanTree
--- Configuring done
--- Generating done
--- Build files have been written to: /Users/fuasahi/C++程序设计/Algo_design/SSE_DSA/HuffmanTree/cmake-build-debug

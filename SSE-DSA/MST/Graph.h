@@ -34,19 +34,30 @@ private:
     std::map<std::string, int> name_to_index;            //图的名称向点的索引
     std::map<int, std::string> index_to_name;            //点对应图的名称的索引
     int vertaxs;                            //顶点的数目
-public:
-    friend class Prim;
-    /*
-     * 用边数构造图
-     */
-    explicit Graph(unsigned V) :edges(V, std::vector<Edge>(V)), vertaxs(V), edgeAdded(false) {}
+
     /*
      * 添加顶点名称
      */
     bool addVertaxName(std::istream& is);
     void addEdges(std::istream& is);
     bool edgeAdded;
-private:
+public:
+    friend class Mst;
+    friend class Kruskal;
+
+    int size() const { return vertaxs;}
+    friend class Prim;
+    /*
+     * 用边数构造图
+     */
+    explicit Graph(unsigned V) :edges(V, std::vector<Edge>(V)), vertaxs(V), edgeAdded(false) {}
+
+
+    static Graph* createVertax();
+    /*
+     * 添加边
+     */
+    static void createEdges(Graph* pgraph);
 
 
 };

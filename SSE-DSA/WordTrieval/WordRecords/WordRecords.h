@@ -36,6 +36,10 @@ public:
      */
     int count_times(const Word& word);
     void show_word(const Word& word);
+    /*
+     * 在测试的时候展现所有的数据
+     */
+    void show_all();
 };
 
 

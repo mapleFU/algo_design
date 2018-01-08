@@ -9,6 +9,19 @@
 3. 死亡数字M
 4. 剩余人数R
 
+### 基础类设计如下
+以下是指向节点的字段
+```doxygen
+node* curnode;
+node*prenode;
+node* min;
+```
+删除一个节点需要知道它之前的节点的信息，这里构造环的时候准备了 curnode prenode 用来构造目前指向的指针和它在环中的前驱元
+
+MIN是指向最小元素的指针，一开始指向第一个人，随着删除它会慢慢向后移动到下一个元素。由于本身是有序的，这样能够保证每次移动都保持最小。
+
+### 获取输入和构造功能实现如下
+
 首先需要得到这四个数据的输入并且排错，这里为了高度抽象，编写了一个模版函数
 ```doxygen
 template <typename ValueType>
@@ -81,3 +94,40 @@ private:
 };
 ```
 用环状链表储存环，并且有MAKELIST()等创建，使用的接口。
+
+#### 死人模拟具体实现如下
+```doxygen
+int JosephRing::die_one() {
+    int count = 1;
+    while (count < mod) {
+        ++count;
+        prenode = prenode->next;
+        curnode = curnode->next;
+    }
+    if (prenode == curnode) {
+        // pass
+    }
+    if (curnode == min) {
+        min = min->next;
+    }
+    std::cout << "第" << ++dead << "个死者的位置是\t" << curnode->index << '\n';
+    auto tmp = curnode->next;
+    delete curnode;
+    curnode = tmp;
+    prenode->next = curnode;
+//    ++dead;
+}
+```
+模拟前进计数并且删除，同时更改MIN指针(即指向最小序号)。
+
+总模拟只要不停模拟DIE_ONE即可
+
+### 整体模拟实现如下
+```doxygen
+void JosephRing::run() {
+    while (dead < tourist - remains) {
+        die_one();
+    }
+}
+```
+在人数小于需要死亡的人数时，不停模拟'死亡一个人'

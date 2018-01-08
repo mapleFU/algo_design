@@ -1,3 +1,0 @@
-/Users/fuasahi/ClionProjects/NQueens/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/Users/fuasahi/ClionProjects/NQueens/cmake-build-debug/CMakeFiles/edit_cache.dir
-/Users/fuasahi/ClionProjects/NQueens/cmake-build-debug/CMakeFiles/NQueens.dir

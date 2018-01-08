@@ -12,7 +12,9 @@
 #include <set>
 
 
-
+/*
+ * 从输入流中读取单词
+ */
 class WordTokenizer {
 public:
     explicit WordTokenizer(const std::string&& _line): line(_line){

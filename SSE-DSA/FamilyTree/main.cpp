@@ -1,13 +1,21 @@
+/*
+ * TODO: 可以考虑对多个重复名字的情况进行处理
+ */
 #include <iostream>
-#include "FmailyTree.h"
 #include <cctype>
+
+#include "FmailyTree.h"
+#include "Hint.h"
 
 using namespace std;
 
 int main() {
+    cout << WELCOME;
     auto tree = FmailyTree::build_family_tree();
 
     std::string operation_code; // 操作对应码
+
+    cout << OPERATES;
     while (cin >> operation_code && operation_code != "E") {
 
         switch (toupper(operation_code[0])) {
@@ -29,6 +37,7 @@ int main() {
 #ifdef FAMILY_TREE_DEBUG
         tree->show_family();
 #endif
+        cout << OPERATES;
     }
     return 0;
 }

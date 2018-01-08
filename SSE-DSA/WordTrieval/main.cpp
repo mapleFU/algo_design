@@ -4,9 +4,20 @@
 #include "WordRecords/WordRecords.h"
 #include "WordRecords/WordTokenizer.h"
 
+#define DEBUG
+#undef DEBUG
+
+#ifdef DEBUG
+#include "Tests/ReadTest.h"
+#include "Tests/SearchTest.h"
+#endif
+
 using namespace std;
 
 int main() {
+#ifdef DEBUG
+    SearchTest::main();
+#endif
     std::string filename;
     cout << "Please input the name of the text" << '\n';
     std::cin >> filename;
@@ -18,15 +29,13 @@ int main() {
     WordRecords records;
 
     for (int line_pos = 1; getline(file_in, line); ++line_pos) {
-//        istringstream line_stream(line);
         WordTokenizer wordTokenizer(line);
         Word tmp_word;
         for (int pos = 1; wordTokenizer.get_word(tmp_word); ++pos) {
-            cout << tmp_word << "   ";
             records.add_record(tmp_word, line_pos, pos);
         }
     }
-
+//
     // trieval
     Word search;
     while (true) {

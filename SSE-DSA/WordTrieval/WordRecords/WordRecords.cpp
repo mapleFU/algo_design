@@ -20,3 +20,11 @@ void WordRecords::show_word(const Word &word) {
     }
     std::cout << "There is no word \"" << word << "\"\n";
 }
+
+void WordRecords::show_all() {
+    for (const auto& pairs: record_map) {
+        std::cout << pairs.first << ":\n";
+        pairs.second.show_all();
+        std::cout << "\n\n";
+    }
+}
