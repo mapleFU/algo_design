@@ -11,10 +11,13 @@ inline void cout_print(const char* s) {
 void SystemView::run() {
     init_sys();
     cout_print("请选择您要进行的操作（1为插入，2为删除，3为查找，4为修改，"
-                       "5为统计，0为取消操作）");
-    while (true) {
-        ask_operation();
+                       "5为统计，6为退出，0为取消上一步操作）");
+
+    bool inf_loop(true);        // 是否一直循环
+    while (inf_loop) {
+        inf_loop = ask_operation();
     }
+    cout_print("欢迎再次使用我们的系统，再见！");
 }
 
 
@@ -25,7 +28,7 @@ bool SystemView::init_sys() {
     os >> size;
 
     // TODO: 输入验证？
-    cout_print("请依次输入考生的考号 性别 姓名已经报考类别");
+    cout_print("请依次输入考生的1.考号 2.姓名 3.姓名 4.年龄 5.已经报考类别");
 
     // TODO: 右值引用
     // add student via input
@@ -43,6 +46,9 @@ bool SystemView::ask_operation() {
     cout_print("请选择您要进行的操作: ");
     int code;
     os >> code;
+    if (code == 6) {
+        return false;
+    }
     commad_manager->excute(code);
     return true;
 }
