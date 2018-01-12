@@ -16,6 +16,7 @@
 #include <array>
 #include <functional>
 #include <stack>
+#include <algorithm>
 /*
  * 根据类型生成swap闭包
  * 自带计数器, 每个函数调用这个SWAP
@@ -302,8 +303,9 @@ int MergeSort_with_insert(iterT beg, iterT end) {
 inline int to_virtual(int size) { return size + 1;}
 
 template <typename T>
-void per_down(T* arr, const int size, int vi) {
+int per_down(T* arr, const int size, int vi) {
     // 对VI进行下滤
+    int cmp(0);
     while (vi <= size / 2) {
         // 对应的左右子节点
         int son_l = vi * 2;
@@ -312,6 +314,7 @@ void per_down(T* arr, const int size, int vi) {
         if (son_r > size) {
             if (arr[son_l - 1] > arr[vi - 1]) {
                 std::swap(arr[son_l - 1], arr[vi - 1]);
+                ++cmp;
             }
             break;
         } else {
@@ -319,21 +322,25 @@ void per_down(T* arr, const int size, int vi) {
 
             if (arr[bigger_son - 1] > arr[vi - 1]) {
                 std::swap(arr[bigger_son - 1], arr[vi - 1]);
+                ++cmp;
                 vi = bigger_son;
             } else {
                 break;
             }
         }
     }
+    return cmp;
 }
 
 template <typename T>
-void build_heap(T* arr, const int size) {
+int build_heap(T* arr, const int size) {
     // 不停将新元素上滤
+    int cmp(0);
     for (int i = size / 2; i >= 1; --i) {
         int vi = i;     //虚拟的坐标
-        per_down(arr, size, vi);
+        cmp += per_down(arr, size, vi);
     }
+    return cmp;
 }
 
 template <typename T>
@@ -357,17 +364,20 @@ bool heap_test(T* arr, const int size) {
 }
 
 template <typename T>
-void HeapSort(T* arr, const int size) {
+int HeapSort(T* arr, const int size) {
+    int cmp(0);
     //  需要动态更改SIZE
     int cur_size = size;
-    build_heap(arr, size);
+    cmp += build_heap(arr, size);
 //    PrintAll(arr, arr + size);
     for (int i = 0; i < size; ++i) {
 
         std::swap(arr[0], arr[cur_size -1]);
+        ++cmp;
         --cur_size;
-        per_down(arr, cur_size, 1);
+        cmp += per_down(arr, cur_size, 1);
     }
+    return cmp;
 }
 
 template <typename iterT>
@@ -490,26 +500,25 @@ void RadixSort2(T* arr, int base, int size) {
     auto aux = new T[size];
     int * counts = new int[base + 1];
     int cur_base = 1;
+
+    int tmp = 0;
     for (int j = 0; j < rounds; ++j) {
         memset(counts, 0, sizeof(int) * base);
 
-        for (int j = 0; j < size; ++j) {
-            ++counts[(arr[j] / cur_base) % base + 1];
+        for (tmp = 0; tmp < size; ++tmp) {
+            ++counts[(arr[tmp] / cur_base) % base + 1];
         }
-        for (int k = 1; k <= base; ++k) {
-            counts[k] += counts[k - 1];
+        for (tmp = 1; tmp < base; ++tmp) {
+            counts[tmp] += counts[tmp - 1];
         }
-        for (int l = 0; l < size; ++l) {
-            aux[counts[(arr[l] / cur_base) % base]++] = arr[l];
+        for (tmp = 0; tmp < size; ++tmp) {
+            aux[counts[(arr[tmp] / cur_base) % base]++] = arr[tmp];
         }
         // write back
-        for (int m = 0; m < size; ++m) {
-            arr[m] = aux[m];
-        }
+        std::copy(aux, aux + size, arr);
+
         cur_base *= base;
     }
-
-
     delete[] aux;
     delete[] counts;
 }

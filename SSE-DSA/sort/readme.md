@@ -168,17 +168,9 @@ int ShellSort(iterT beg, iterT end){   //sedgewick增量序列
 }
 ```
 
-1. `Increments`函数生成Sedgewick增量序列，根据这个序列，利用希尔排序。
+`Increments`函数生成Sedgewick增量序列，根据这个序列，利用希尔排序。
 
-2. 内部已一定的差值，调用两重循环，完成这个排序过程
 
-   ```c++
-   for (int i = (*pVec).size() - 1; i >= 0; --i) {
-           for (auto j = (*pVec)[i]; j < datasize; ++j) {  
-               exchange code...
-           }
-       }
-   ```
 
 | 算法复杂度 | 算法稳定性 | 适合情况   |
 | ----- | ----- | ------ |
@@ -260,16 +252,9 @@ void per_down(T* arr, const int size, int vi) {
 ```
 
 用下滤处理堆排序。
-
-算法要点
-
-1. `build_heap(arr, size);`将数组构建成二叉堆的形式，满足堆序性质
-2. 借助`per_down(T* arr, const int size, int vi)`进行下滤
-3. 额外空间O(1)
-
-| 算法复杂度   | 算法稳定性 | 适合情况                       |
-| ------- | ----- | -------------------------- |
-| O(nlgn) | 不稳定   | 内存需要额外内存小,$O(1)$  的额外空间消耗。 |
+| 算法复杂度   | 算法稳定性 | 适合情况       |
+| ------- | ----- | ---------- |
+| O(nlgn) | 不稳定   | 内存需要额外内存小。 |
 
 ### 快速排序
 
@@ -306,128 +291,3 @@ int QuickSort(iterT beg, iterT end){
 }
 ```
 
-算法要点
-
-1. 调用`_division(left, mid, right); `来进行简单的分割，从最左，最右侧，中间的数中选出中间值的数，让快速排序枢纽元的选取更加的均衡
-
-2. ```
-   cmp_times += QuickSort(beg, left);
-   cmp_times += QuickSort(left + 1, end);
-   ```
-
-   画风后调用程序排序坐左侧右侧的程序
-
-| 算法复杂度                         | 算法稳定性 | 适合情况                    |
-| ----------------------------- | ----- | ----------------------- |
-| O(N^2)的复杂度上界，但是运行时间一般接近(nlgn) | 不稳定   | 额外开销不算过大，不需要稳定性给数据进行排序。 |
-
-### 三数切分的快速排序
-
-```c++
-template <typename iterT>
-int QuickSort_three(iterT beg, iterT end) {
-    int swaps = 0;
-    if (end - beg <= 15) {
-        swaps = InsertionSort(beg, end);
-        return swaps;
-    }
-    iterT left = beg, right = end - 1;
-    iterT mid = beg + (end - beg) / 2;
-    _division(left, mid, right);        // 三数分割
-    iterT lt = left + 1, rt = end - 1;
-    auto pivot = *(rt - 1);
-    while (left < rt) {
-        if (*left > pivot) {
-            std::iter_swap(left, rt--);
-            ++swaps;
-        } else if (*left == pivot) {
-            ++left;
-        } else if (*left < pivot) {
-            ++left, ++lt;
-        }
-    }
-    swaps += QuickSort_three(beg, lt);
-    swaps += QuickSort_three(rt, end);
-    return swaps;
-}
-```
-
-跟之前的算法复杂度不发生变化，详细变化出现在
-
-```
-while (left < rt) {
-        if (*left > pivot) {
-            std::iter_swap(left, rt--);
-            ++swaps;
-        } else if (*left == pivot) {
-            ++left;
-        } else if (*left < pivot) {
-            ++left, ++lt;
-        }
-    }
-```
-
-对等于枢纽元的数全部切分到一起，维护left—right为中间段区域，这一段的值等于pivot
-
-| 算法复杂度                         | 算法稳定性 | 适合情况                      |
-| ----------------------------- | ----- | ------------------------- |
-| O(N^2)的复杂度上界，但是运行时间一般接近(nlgn) | 不稳定   | 相对快速排序而言，适合可能重复的范围比较多的数据。 |
-
-### 基数排序
-
-```c++
-template <typename T>
-void RadixSort2(T* arr, int base, int size) {
-    // 用最大值求趟数
-    T max_value = arr[0];
-    for (int i = 1; i < size; ++i) {
-        if (arr[i] > max_value) max_value = arr[i];
-    }
-    // 需要运行的趟数
-    int rounds(0);
-    while (max_value) {
-        max_value /= base;
-        ++rounds;
-    }
-
-    auto aux = new T[size];
-    int * counts = new int[base + 1];
-    int cur_base = 1;
-    for (int j = 0; j < rounds; ++j) {
-        memset(counts, 0, sizeof(int) * base);
-		// 键索引计数法，算出需要对应的索引
-        for (int j = 0; j < size; ++j) {
-            ++counts[(arr[j] / cur_base) % base + 1];
-        }
-        for (int k = 1; k <= base; ++k) {
-            counts[k] += counts[k - 1];
-        }
-      	// 根据之前算出的索引给出空间
-        for (int l = 0; l < size; ++l) {
-            aux[counts[(arr[l] / cur_base) % base]++] = arr[l];
-        }
-        // write back
-        for (int m = 0; m < size; ++m) {
-            arr[m] = aux[m];
-        }
-        cur_base *= base;
-    }
-
-
-    delete[] aux;
-    delete[] counts;
-}
-```
-
-算法要点
-
-1. 先计算出最大的数字，算出需要运行的趟数
-2. 在每趟循环中:
-   1. 键索引计数，并在该趟处理相应数据
-   2. 调整base
-
-| 算法复杂度 | 算法稳定性 | 适合情况                                     |
-| ----- | ----- | ---------------------------------------- |
-| O(N)  | 稳定    | 算法绝对迅速，但是需要能够把待排序的数据按照关键字映射到整数的集合上。对于整数、字符串等数据比较适合。 |
-
-### 
