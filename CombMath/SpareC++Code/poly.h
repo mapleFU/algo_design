@@ -10,7 +10,6 @@
 #include <cmath>
 #include <vector>
 #include <utility>
-#include <cctype>
 
 struct polyData {
     int expon;
@@ -54,22 +53,12 @@ public:         //可以设计 operator = 减少重用；
     void get_a_node(int coef, int expon);
 };
 
-inline int mystoi(const std::string& str , unsigned long *posEnd, int base) {
-    int i_ret = 0;
-    *posEnd = 0;
-    while (isdigit(str[*posEnd])) {
-        i_ret *= base;
-        i_ret += tolower(str[*posEnd]) - 'a';
-        ++(*posEnd);
-    }
-    return i_ret;
-}
-
 inline int getNumber(unsigned long &pos, const std::string& str) {
-    static const std::string numbers = "0123456789";
+    using namespace std;
+    static const string numbers = "0123456789";
 //    auto posEnd = str.find_first_not_of(numbers, pos);
     unsigned long posEnd;
-    int ret = mystoi(str.substr(pos), &posEnd, 10);
+    int ret = stoi(str.substr(pos), &posEnd, 10);
     pos += posEnd;
     return ret;
 }
