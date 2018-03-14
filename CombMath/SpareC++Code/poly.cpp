@@ -63,7 +63,7 @@ poly::poly(const std::string &str) {
         if (str[i] == '+' || str[i] == '-') {
             isadd = (str[i] == '+') ? true: false;
         }
-        if (isnumber(str[i])) {
+        if (isdigit(str[i])) {
             int val1 = getNumber(i, str);   //得到第一个值, i指向最后一个是数字的值
             int val2(0);
             val1 = isadd ? val1: -val1;

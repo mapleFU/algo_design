@@ -53,12 +53,23 @@ public:         //可以设计 operator = 减少重用；
     void get_a_node(int coef, int expon);
 };
 
+inline int mystoi(const std::string& s, unsigned long* ptr_pos, int base) {
+    int ret = 0;
+    *ptr_pos = 0;
+    while (isdigit(s[*ptr_pos])) {
+        ret *= base;
+        ret += tolower(s[*ptr_pos]) - 'a';
+        ++(*ptr_pos);
+    }
+    return ret;
+}
+
 inline int getNumber(unsigned long &pos, const std::string& str) {
     using namespace std;
     static const string numbers = "0123456789";
 //    auto posEnd = str.find_first_not_of(numbers, pos);
     unsigned long posEnd;
-    int ret = stoi(str.substr(pos), &posEnd, 10);
+    int ret = mystoi(str.substr(pos), &posEnd, 10);
     pos += posEnd;
     return ret;
 }
