@@ -36,6 +36,23 @@ int binary_search(const std::vector<int>& ref, int search_val, int begin, int en
     }
 }
 
+int binary_search_non_recursively(const std::vector<int>& ref, int search_val, int begin, int end,
+        function<bool(int, int)> comp) {
+    while( true ){
+
+        if (end - begin == 1) {
+            return begin;
+        }
+        int mid = (end - begin) / 2 + begin;
+        // mid > search_val
+        if (comp(ref[mid], search_val)) {
+            end = mid;
+        } else {
+            begin = mid;
+        }
+    }
+}
+
 
 class Solution {
 public:
@@ -56,7 +73,7 @@ public:
         if (cur != 0) {
             // 1 3 4 2
             //   p c
-            int swap_index = binary_search(nums, nums[cur - 1], cur, nums.size(), [](int a, int b) { return b >= a;});;
+            int swap_index = binary_search_non_recursively(nums, nums[cur - 1], cur, nums.size(), [](int a, int b) { return b >= a;});;
 //            cout << swap_index << ' ' << pre << '\n';
             // 1 3 4 2
             //   p   s
