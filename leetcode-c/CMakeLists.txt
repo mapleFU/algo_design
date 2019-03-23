@@ -8,3 +8,7 @@ add_executable(p344-test test.c)
 add_executable(lp longest_palindrome_substring_5.cpp)
 add_executable(ms multiply_strings.cpp)
 add_executable(long-pd longest_palindrome_409.cpp)
+
+add_executable(memory-leak memory_leak.c)
+
+add_executable(next-permulation p31_next_permulation.cpp)
