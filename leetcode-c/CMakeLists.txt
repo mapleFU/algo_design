@@ -12,3 +12,5 @@ add_executable(long-pd longest_palindrome_409.cpp)
 add_executable(memory-leak memory_leak.c)
 
 add_executable(next-permulation p31_next_permulation.cpp)
+
+add_executable(two-sum p1_two_sum.cpp)
