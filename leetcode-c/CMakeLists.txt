@@ -14,3 +14,5 @@ add_executable(memory-leak memory_leak.c)
 add_executable(next-permulation p31_next_permulation.cpp)
 
 add_executable(two-sum p1_two_sum.cpp)
+add_executable(all-dup-in-arr p442_find_all_duplicates_in_array.cpp)
+add_executable(mid-of-two p4_medium_of_two_sorted.cpp)
