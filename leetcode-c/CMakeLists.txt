@@ -16,3 +16,10 @@ add_executable(next-permulation p31_next_permulation.cpp)
 add_executable(two-sum p1_two_sum.cpp)
 add_executable(all-dup-in-arr p442_find_all_duplicates_in_array.cpp)
 add_executable(mid-of-two p4_medium_of_two_sorted.cpp)
+
+add_executable(rev-link-list p206_reverse_link_list.cpp)
+add_executable(del-list-node p237_delete_node.cpp)
+
+add_executable(merge-sorted-list p21_merge_sorted_list.cpp)
+add_executable(sort-list p148_sort_list.cpp)
+add_executable(middle-linked-list p876_middle_of_linked_list.cpp)
