@@ -33,3 +33,5 @@ add_executable(rational-calc rational_calc.cpp)
 add_executable(add-two-numbers p2_fake_add_two_numbers.cpp)
 
 add_executable(add-two-numbers-real p2_add_two_numbers.cpp)
+
+add_executable(longest-substring-without-duplicate p3_longest_substring_without_duplicate.cpp)
