@@ -27,3 +27,9 @@ add_executable(middle-linked-list p876_middle_of_linked_list.cpp)
 
 add_executable(max-depth-bst p104_max_depth_binary_tree.cpp)
 
+add_executable(minimun-delta minimum_delta.cpp)
+add_executable(rational-calc rational_calc.cpp)
+
+add_executable(add-two-numbers p2_fake_add_two_numbers.cpp)
+
+add_executable(add-two-numbers-real p2_add_two_numbers.cpp)

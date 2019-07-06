@@ -9,6 +9,10 @@
 
 using namespace std;
 
+/**
+ * 用哈希记录历史信息，查找到对应的，有就提交
+ *
+ */
 class HashSolution {
 public:
     vector<int> twoSum(vector<int>& nums, int target) {
@@ -17,11 +21,14 @@ public:
             auto to_find = uset.find(nums[i]);
             if (to_find != uset.end()) {
                 // found it
+                // 返回对应的 vector
                 return vector<int>{
                     to_find->second,
                     i
                 };
             }
+            // target = nums[i]
+            // 把"目标" 放到 set 里，方便进行测试
             uset[target - nums[i]] = i;
 
         }
