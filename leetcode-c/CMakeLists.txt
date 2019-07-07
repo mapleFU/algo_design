@@ -5,7 +5,7 @@ set (CMAKE_CXX_STANDARD 11)
 add_library(lib p344_reverse_string.c p541_preverse_string_2.cpp)
 add_executable(p344-test test.c)
 
-add_executable(lp longest_palindrome_substring_5.cpp)
+add_executable(lp p5_longest_palindrome_substring_5.cpp)
 add_executable(ms multiply_strings.cpp)
 add_executable(long-pd longest_palindrome_409.cpp)
 
@@ -35,3 +35,5 @@ add_executable(add-two-numbers p2_fake_add_two_numbers.cpp)
 add_executable(add-two-numbers-real p2_add_two_numbers.cpp)
 
 add_executable(longest-substring-without-duplicate p3_longest_substring_without_duplicate.cpp)
+
+add_executable(zigzag-conversion p6_zigzag_conversion.cpp)
