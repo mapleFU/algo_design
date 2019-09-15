@@ -41,3 +41,7 @@ add_executable(zigzag-conversion p6_zigzag_conversion.cpp)
 add_executable(binary-search p704_binary_search.cpp)
 
 add_executable(search-in-2D-matrix-2 p240_search_in_2D_matrix.cpp)
+
+add_executable(find-the-duplicate-number p287_find_the_duplicate_number.cpp)
+
+add_executable(remove-duplicate-from-sorted-array p26_remove_duplicate_from_sorted_array.cpp)

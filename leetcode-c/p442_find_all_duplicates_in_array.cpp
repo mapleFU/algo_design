@@ -14,23 +14,26 @@ public:
         vector<int> vec;
         int handling_index = 0;
         while (handling_index < nums.size()) {
-//            int handling = nums[handling_index];
-            int abs_handling = abs(nums[handling_index]);
-            if (abs_handling == handling_index + 1) {
+            int handling_number = nums[handling_index];
+
+            // 真好放在应该放的位置上, 或者没有东西在这
+            if (handling_number == -1 || handling_number == handling_index + 1) {
+                // ++index
                 ++handling_index;
                 continue;
             }
-            // abs(cur) != cur + 1
-            std::swap(nums[nums[handling_index] - 1], nums[handling_index]);
-
-            if (nums[handling_index] == abs_handling) {
-                vec.push_back(abs_handling);
-                nums[handling_index] = - (handling_index + 1);
-            } else if (nums[handling_index] < 0) {
-                nums[handling_index] = - (handling_index + 1);
+            // handling_number 位置上有元素了
+            if (nums[handling_number - 1] == handling_number) {
+                // 那么显然，handling_number 是个重复数据
+                vec.push_back(handling_number);
+                // 设置成 -1
+                nums[handling_index] = -1;
+                ++handling_index;
+                continue;
             }
+
+            std::swap(nums[handling_number - 1], nums[handling_index]);
         }
-//        sort(vec.begin(), vec.end());
         return vec;
     }
 };
@@ -58,7 +61,12 @@ public:
 
 int main() {
     SolutionOne solution;
-    vector<int> dup{4,3,2,7,8,2,3,1};
+    vector<int> dup{4, 3, 2, 7, 8, 2, 3, 1};
 
     print_perms(solution.findDuplicates(dup));
+
+    Solution soln;
+
+    vector<int> dup2{4, 3, 2, 7, 8, 2, 3, 1};
+    print_perms(soln.findDuplicates(dup2));
 }
