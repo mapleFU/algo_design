@@ -37,3 +37,7 @@ add_executable(add-two-numbers-real p2_add_two_numbers.cpp)
 add_executable(longest-substring-without-duplicate p3_longest_substring_without_duplicate.cpp)
 
 add_executable(zigzag-conversion p6_zigzag_conversion.cpp)
+
+add_executable(binary-search p704_binary_search.cpp)
+
+add_executable(search-in-2D-matrix-2 p240_search_in_2D_matrix.cpp)

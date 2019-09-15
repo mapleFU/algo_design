@@ -39,11 +39,17 @@ class SolutionOne {
 public:
     vector<int> findDuplicates(vector<int>& nums) {
         vector<int> ret;
+        // 在 nums 中的 n
         for (auto n: nums) {
+            // an 是对应的绝对位置
             int an = abs(n);
+            // 如果对应的小于0，那么显然是重复的
             if (nums[an - 1] < 0) {
                 ret.push_back(an);
             }
+            // 设置应有的位置对应的为 -绝对值大小
+            // 位置为 -1: 已经使用过
+            // 位置上的数值则是正常的数值。
             nums[an - 1] = -abs(nums[an - 1]);
         }
         return ret;
