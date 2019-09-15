@@ -1,6 +1,7 @@
 project(leetcode-c)
 
 set (CMAKE_CXX_STANDARD 11)
+cmake_minimum_required(VERSION 3.12)
 
 add_library(lib p344_reverse_string.c p541_preverse_string_2.cpp)
 add_executable(p344-test test.c)
@@ -45,3 +46,7 @@ add_executable(search-in-2D-matrix-2 p240_search_in_2D_matrix.cpp)
 add_executable(find-the-duplicate-number p287_find_the_duplicate_number.cpp)
 
 add_executable(remove-duplicate-from-sorted-array p26_remove_duplicate_from_sorted_array.cpp)
+
+add_executable(add-binary p67_add_binary.cpp)
+add_executable(plus-one p66_plus_one.cpp)
+add_executable(multiple-strings p43_multiple_strings.cpp)
