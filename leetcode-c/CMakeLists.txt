@@ -50,3 +50,4 @@ add_executable(remove-duplicate-from-sorted-array p26_remove_duplicate_from_sort
 add_executable(add-binary p67_add_binary.cpp)
 add_executable(plus-one p66_plus_one.cpp)
 add_executable(multiple-strings p43_multiple_strings.cpp)
+add_executable(Remove-Nth-Node-From-End-of-List p19_remove_nth_node_from_end_of_list.cpp)
