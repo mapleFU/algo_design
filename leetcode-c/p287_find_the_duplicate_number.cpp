@@ -22,8 +22,6 @@ public:
             loop(nums, quick_pointer);
             loop(nums, slow_pointer);
             // 9 5 4 1
-
-
             if (quick_pointer == slow_pointer) {
                 break;
             }

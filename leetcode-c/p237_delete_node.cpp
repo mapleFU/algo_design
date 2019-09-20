@@ -22,10 +22,9 @@ public:
     //  3---->4 , del 3
     void deleteNode(ListNode* node) {
 
-        node->val = std::move(node->next->val);
+        node->val = node->next->val;
         node->next = node->next->next;
         if (node->next != nullptr) {
-//            free(change);
             delete node->next;
         }
     }
