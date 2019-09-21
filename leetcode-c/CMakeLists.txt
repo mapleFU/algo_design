@@ -1,6 +1,6 @@
 project(leetcode-c)
 
-set (CMAKE_CXX_STANDARD 11)
+set (CMAKE_CXX_STANDARD 17)
 cmake_minimum_required(VERSION 3.12)
 
 add_library(lib p344_reverse_string.c p541_preverse_string_2.cpp)
@@ -53,3 +53,5 @@ add_executable(multiple-strings p43_multiple_strings.cpp)
 add_executable(Remove-Nth-Node-From-End-of-List p19_remove_nth_node_from_end_of_list.cpp)
 
 add_executable(partition_equal_subset_sum p416_partition_equal_subset_sum.cpp)
+
+add_executable(replace-words p648_replace_words.cpp)
