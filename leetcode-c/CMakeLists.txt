@@ -57,3 +57,5 @@ add_executable(partition_equal_subset_sum p416_partition_equal_subset_sum.cpp)
 add_executable(replace-words p648_replace_words.cpp)
 
 add_executable(Construct-Binary-Tree-from-Preorder-and-Inorder-Traversal p105_rebuild_binary_tree.cpp)
+
+add_executable(Find_Minimum_in_Rotated_Sorted_Array p153_Find_Minimum_in_Rotated_Sorted_Array.cpp)
