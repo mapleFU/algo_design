@@ -55,3 +55,5 @@ add_executable(Remove-Nth-Node-From-End-of-List p19_remove_nth_node_from_end_of_
 add_executable(partition_equal_subset_sum p416_partition_equal_subset_sum.cpp)
 
 add_executable(replace-words p648_replace_words.cpp)
+
+add_executable(Construct-Binary-Tree-from-Preorder-and-Inorder-Traversal p105_rebuild_binary_tree.cpp)

@@ -8,6 +8,16 @@
 #include <iostream>
 #include <vector>
 
+
+
+struct TreeNode {
+      int val;
+      TreeNode *left;
+      TreeNode *right;
+      TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+};
+
+
 void print_perms(const std::vector<int>& perms) {
     for (int i = 0; i < perms.size(); ++i) {
         std::cout << perms[i] << ' ';
