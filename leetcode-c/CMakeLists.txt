@@ -63,3 +63,7 @@ add_executable(Find_Minimum_in_Rotated_Sorted_Array p153_Find_Minimum_in_Rotated
 add_executable(kth-largest-element-in-array p215_kth_largest_element_in_array.cpp)
 
 add_executable(majority-element p169_majority_element.cpp)
+
+add_executable(fib-number p509_fibonacci_number.cpp)
+
+add_executable(super-pow p372_super_pow.cpp)
