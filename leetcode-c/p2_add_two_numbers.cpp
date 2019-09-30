@@ -2,9 +2,9 @@
 // Created by 付旭炜 on 2019/7/6.
 //
 
+#include "link_list.h"
 #include <iostream>
 #include <tuple>
-#include "link_list.h"
 
 /**
  * Definition for singly-linked list.
@@ -18,11 +18,11 @@
  * 但是我题目意思好像理解错了
  */
 class Solution {
-public:
-    ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+  public:
+    ListNode *addTwoNumbers(ListNode *l1, ListNode *l2) {
         // return two nullptr for nodes
-        ListNode* head = nullptr;
-        ListNode* tail = nullptr;
+        ListNode *head = nullptr;
+        ListNode *tail = nullptr;
 
         int carry = 0;
 
@@ -40,13 +40,14 @@ public:
                 add2 = get_add(l2);
             }
             // handing carry and add
-//            std::cout << "carry is " << carry << "; add1 is " << add1 << "; add2 is " << add2;
+            //            std::cout << "carry is " << carry << "; add1 is " <<
+            //            add1 << "; add2 is " << add2;
             int sum = add1 + add2 + carry;
-//            std::cout << "      Sum is" << sum << '\n';
+            //            std::cout << "      Sum is" << sum << '\n';
             carry = sum / 10;
             int val = sum % 10;
 
-            ListNode* node = new ListNode(val);
+            ListNode *node = new ListNode(val);
             if (head == nullptr) {
                 head = node;
             } else {
@@ -60,15 +61,15 @@ public:
         }
     }
 
-private:
-    int get_add(const ListNode* node) {
+  private:
+    int get_add(const ListNode *node) {
         if (node == nullptr) {
             return 0;
         }
         return node->val;
     }
 
-    void move_list(ListNode* &node) {
+    void move_list(ListNode *&node) {
         if (node == nullptr) {
             return;
         }
@@ -80,11 +81,11 @@ int main() {
     // 342 + 465 = 807.
     auto list1 = make_list({2, 4, 3});
     auto list2 = make_list({5, 6, 4, 1});
-//    auto expected = make_list();
+    //    auto expected = make_list();
     print_list(list1);
     print_list(list2);
 
-    Solution* sol = new Solution();
+    Solution *sol = new Solution();
     auto answer = sol->addTwoNumbers(list1, list2);
     print_list(answer);
 
@@ -92,7 +93,7 @@ int main() {
 
     list1 = make_list({5});
     list2 = make_list({5});
-//    auto expected = make_list();
+    //    auto expected = make_list();
     print_list(list1);
     print_list(list2);
     answer = sol->addTwoNumbers(list1, list2);

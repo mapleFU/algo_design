@@ -7,7 +7,7 @@
 using namespace std;
 
 class Solution {
-public:
+  public:
     static constexpr int EXP = 1337;
     // base^exp
     // to_ret = (base * base, exp / 2) *  (base * base, exp / 2)
@@ -28,17 +28,22 @@ public:
         }
         return sum;
     }
-public:
-    // a^1234567 % k = (a^1234560 % k) * (a^7 % k) % k = (a^123456 % k)^10 % k * (a^7 % k) % k
-    // Suppose f(a, b) calculates a^b % k; Then translate above formula to using f :
-    // f(a,1234567) = f(a, 1234560) * f(a, 7) % k = f(f(a, 123456),10) * f(a,7)%k;
-    // f(a, 10) = f(1)^10
-    int superPow(int a, vector<int>& b) {
-        if (a == 0) return 0;
-        if (b.empty()) return 1;
+
+  public:
+    // a^1234567 % k = (a^1234560 % k) * (a^7 % k) % k = (a^123456 % k)^10 % k *
+    // (a^7 % k) % k Suppose f(a, b) calculates a^b % k; Then translate above
+    // formula to using f : f(a,1234567) = f(a, 1234560) * f(a, 7) % k = f(f(a,
+    // 123456),10) * f(a,7)%k; f(a, 10) = f(1)^10
+    int superPow(int a, vector<int> &b) {
+        if (a == 0)
+            return 0;
+        if (b.empty())
+            return 1;
         int back_val = b.back();
         b.pop_back();
-        return (superPowHelper(superPow(a, b), 10) * superPowHelper(a, back_val)) % EXP;
+        return (superPowHelper(superPow(a, b), 10) *
+                superPowHelper(a, back_val)) %
+               EXP;
     }
 };
 

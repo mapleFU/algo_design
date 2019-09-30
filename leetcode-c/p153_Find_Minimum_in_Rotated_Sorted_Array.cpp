@@ -7,9 +7,8 @@ using namespace std;
 
 class Solution {
 
-public:
-
-    int findMin(vector<int>& nums) {
+  public:
+    int findMin(vector<int> &nums) {
         // [left, right]
         // left 可能在左侧排序，right 在右侧排序
         size_t left = 0, right = nums.size() - 1;
@@ -22,7 +21,7 @@ public:
         }
         // 循环条件：right/left 没贴着
         while (nums[left] >= nums[right]) {
-            if( right - left == 1) {
+            if (right - left == 1) {
                 return nums[right];
             }
 

@@ -13,10 +13,10 @@
 #include "link_list.h"
 
 class Solution {
-public:
-    ListNode* middleNode(ListNode* head) {
+  public:
+    ListNode *middleNode(ListNode *head) {
         int size = 0;
-        ListNode* cur = head;
+        ListNode *cur = head;
         while (cur) {
             cur = cur->next;
             ++size;
@@ -31,8 +31,8 @@ public:
 };
 
 class SolutionTwoPointer {
-public:
-    ListNode* middleNode(ListNode* head) {
+  public:
+    ListNode *middleNode(ListNode *head) {
         // slow , fast pointer
         // 1 2 3 4 5
         // sf
@@ -43,8 +43,8 @@ public:
         //   s f
         //     s   f
         //       s     f
-        ListNode* slow = head;
-        ListNode* fast = head;
+        ListNode *slow = head;
+        ListNode *fast = head;
         while (fast && fast->next) {
             fast = fast->next->next;
             slow = slow->next;

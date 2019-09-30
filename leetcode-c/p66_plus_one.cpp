@@ -7,8 +7,8 @@
 using namespace std;
 
 class Solution {
-private:
-    int load_cnt(const vector<int>& v, size_t reverse_index) {
+  private:
+    int load_cnt(const vector<int> &v, size_t reverse_index) {
         size_t slen = static_cast<int>(v.size());
         if (slen <= reverse_index) {
             return 0;
@@ -16,8 +16,8 @@ private:
         return v[slen - reverse_index - 1];
     }
 
-public:
-    vector<int> plusOne(vector<int>& digits) {
+  public:
+    vector<int> plusOne(vector<int> &digits) {
         vector<int> new_vec;
         int carry = 1;
         int current_digit = 0;

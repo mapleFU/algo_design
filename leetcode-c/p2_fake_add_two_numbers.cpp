@@ -2,9 +2,9 @@
 // Created by 付旭炜 on 2019/7/6.
 //
 
+#include "link_list.h"
 #include <iostream>
 #include <tuple>
-#include "link_list.h"
 
 /**
  * Definition for singly-linked list.
@@ -18,8 +18,8 @@
  * 但是我题目意思好像理解错了
  */
 class Solution {
-public:
-    ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+  public:
+    ListNode *addTwoNumbers(ListNode *l1, ListNode *l2) {
         // return two nullptr for nodes
         if (l1 == nullptr) {
             return l2;
@@ -27,23 +27,23 @@ public:
         if (l2 == nullptr) {
             return l1;
         }
-        ListNode* node;
+        ListNode *node;
         int carry;
         // carry point
         std::tie(node, carry) = sub_add(l1, l2);
         if (carry != 0) {
             // if node is nullptr
             // for 0 1->0
-            ListNode* head = new ListNode(carry);
+            ListNode *head = new ListNode(carry);
             head->next = node;
             node = head;
         }
         return node;
     }
 
-private:
+  private:
     // 返回值代表 carry 和返回的 Linked List
-    std::tuple<ListNode*, int> sub_add(ListNode* sub1, ListNode* sub2) {
+    std::tuple<ListNode *, int> sub_add(ListNode *sub1, ListNode *sub2) {
         int sub1_is_end = sub1->next == nullptr;
         int sub2_is_end = sub2->next == nullptr;
 
@@ -53,24 +53,24 @@ private:
             // split val to self and carry
             int self = val % 10;
             int carry = val / 10;
-            ListNode* node = new ListNode(self);
+            ListNode *node = new ListNode(self);
             return std::make_tuple(node, carry);
         } else if (sub1_is_end) {
 
             return sub_add(sub1, sub2->next);
-        } else if (sub2_is_end){
+        } else if (sub2_is_end) {
             return sub_add(sub1->next, sub2);
         } else {
-            ListNode* node;
+            ListNode *node;
             int carry;
             // carry point
             std::tie(node, carry) = sub_add(sub1->next, sub2->next);
-//            print_list(node);
-//            std::cout << "Carry is " << carry << '\n';
+            //            print_list(node);
+            //            std::cout << "Carry is " << carry << '\n';
             int val = sub1->val + sub2->val + carry;
             int self = val % 10;
             int r_carry = val / 10;
-            ListNode* r_node = new ListNode(self);
+            ListNode *r_node = new ListNode(self);
             r_node->next = node;
 
             return std::make_tuple(r_node, r_carry);
@@ -84,6 +84,6 @@ int main() {
     print_list(list1);
     print_list(list2);
 
-    Solution* sol = new Solution();
+    Solution *sol = new Solution();
     print_list(sol->addTwoNumbers(list1, list2));
 }

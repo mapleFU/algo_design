@@ -2,23 +2,25 @@
 // Created by 付旭炜 on 2019/9/21.
 //
 
-#include <iostream>
 #include <algorithm>
+#include <iostream>
 #include <numeric>
 #include <vector>
 
 using namespace std;
 
 class Solution {
-public:
-    bool canPartition(vector<int>& nums) {
+  public:
+    bool canPartition(vector<int> &nums) {
 
         int sum = std::accumulate(nums.cbegin(), nums.cend(), 0);
         if (sum % 2) {
             return false;
         }
         // dp[index + 1][sum_val + 1]
-        std::vector<std::vector<bool>> dp(nums.size() + 1, std::vector<bool>(static_cast<size_t >(sum + 1), false));
+        std::vector<std::vector<bool>> dp(
+            nums.size() + 1,
+            std::vector<bool>(static_cast<size_t>(sum + 1), false));
 
         // 第0个数值，里面只有1是true
         for (int i = 0; i < nums.size() + 1; ++i) {
@@ -33,13 +35,15 @@ public:
             for (int k = 0; k < current_val; ++k) {
                 dp[j][k] = dp[j - 1][k];
                 if (dp[j][k]) {
-                    cout << "dp[i] is true in loop " << j << ", index " << current_val << '\n';
+                    cout << "dp[i] is true in loop " << j << ", index "
+                         << current_val << '\n';
                 }
             }
             for (int i = current_val; i <= sum; ++i) {
                 dp[j][i] = dp[j - 1][i - current_val] || dp[j - 1][i];
                 if (dp[j][i]) {
-                    cout << "dp[i] is true in loop " << j << ", index " << current_val << '\n';
+                    cout << "dp[i] is true in loop " << j << ", index "
+                         << current_val << '\n';
                 }
             }
         }
@@ -48,15 +52,15 @@ public:
 };
 
 class SolutionOne {
-public:
-    bool canPartition(vector<int>& nums) {
+  public:
+    bool canPartition(vector<int> &nums) {
 
         int sum = std::accumulate(nums.cbegin(), nums.cend(), 0);
         if (sum % 2) {
             return false;
         }
         // dp[index + 1]
-        std::vector<bool> dp(static_cast<size_t >(sum + 1), false);
+        std::vector<bool> dp(static_cast<size_t>(sum + 1), false);
 
         // 可以到 0
         dp[0] = true;
@@ -74,15 +78,15 @@ public:
 };
 
 int main() {
-//    Solution soln;
-//    std::vector<int> v{0, 1, 5, 6};
-//    cout << soln.canPartition(v) << '\n';
-//    v = {1, 5, 11, 5};
-//    cout << soln.canPartition(v) << '\n';
-//    v = {1, 2, 5};
-//    cout << soln.canPartition(v) << '\n';
-//    v = {2,2,3,5};
-//    cout << soln.canPartition(v) << '\n';
+    //    Solution soln;
+    //    std::vector<int> v{0, 1, 5, 6};
+    //    cout << soln.canPartition(v) << '\n';
+    //    v = {1, 5, 11, 5};
+    //    cout << soln.canPartition(v) << '\n';
+    //    v = {1, 2, 5};
+    //    cout << soln.canPartition(v) << '\n';
+    //    v = {2,2,3,5};
+    //    cout << soln.canPartition(v) << '\n';
 
     SolutionOne soln2;
     std::vector<int> v2{0, 1, 5, 6};
@@ -91,6 +95,6 @@ int main() {
     cout << soln2.canPartition(v2) << '\n';
     v2 = {1, 2, 5};
     cout << soln2.canPartition(v2) << '\n';
-    v2 = {2,2,3,5};
+    v2 = {2, 2, 3, 5};
     cout << soln2.canPartition(v2) << '\n';
 }

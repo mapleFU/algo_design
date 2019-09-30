@@ -7,8 +7,8 @@
 using namespace std;
 
 class Solution {
-public:
-    int load_cnt(const string& s, size_t reverse_index) {
+  public:
+    int load_cnt(const string &s, size_t reverse_index) {
         size_t slen = static_cast<int>(s.size());
         if (slen <= reverse_index) {
             return 0;
@@ -16,7 +16,7 @@ public:
         return s[slen - reverse_index - 1] - '0';
     }
 
-public:
+  public:
     string addBinary(string a, string b) {
         int carry = 0;
         string s;

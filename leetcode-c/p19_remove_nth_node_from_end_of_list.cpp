@@ -14,17 +14,17 @@
  * };
  */
 class Solution {
-public:
+  public:
     // remove nth from end
     // 1->2->3->4->5
     // 1->2   ->4->5
     //       p1    p2
-    ListNode* removeNthFromEnd(ListNode* head, int n) {
+    ListNode *removeNthFromEnd(ListNode *head, int n) {
         if (head == nullptr) {
             return nullptr;
         }
-        ListNode* prev_cursor = nullptr;
-        ListNode* post_cursor = head;
+        ListNode *prev_cursor = nullptr;
+        ListNode *post_cursor = head;
         int counter = 0;
         // seek n 次
         while (post_cursor->next != nullptr && counter < n - 1) {

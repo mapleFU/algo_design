@@ -2,20 +2,20 @@
 // Created by 付旭炜 on 2019/3/6.
 //
 
+#include <algorithm>
 #include <iostream>
 #include <string>
-#include <algorithm>
 #include <vector>
 
 using namespace std;
 
 class Solution {
-public:
+  public:
     virtual string longestPalindrome(string s) = 0;
 };
 
-class ExpandAroundCenter: public Solution {
-public:
+class ExpandAroundCenter : public Solution {
+  public:
     string longestPalindrome(string s) override {
         int longest = 1;
         int mid = 0;
@@ -29,7 +29,7 @@ public:
 
         int doubleLongest = 0;
         int mid2 = 0;
-//        errors: s.size -1 is stupid
+        //        errors: s.size -1 is stupid
         for (int i = 0; i + 1 < s.size(); ++i) {
             int currentLength = checkDouble(s, i);
             if (currentLength >= doubleLongest) {
@@ -45,11 +45,11 @@ public:
             }
 
             if (longest > doubleLongest) {
-                beg_pos = mid - int(longest-1)/2;
-                end_pos = mid + int(longest-1)/2 + 1;
+                beg_pos = mid - int(longest - 1) / 2;
+                end_pos = mid + int(longest - 1) / 2 + 1;
 
             } else {
-                beg_pos = mid2 - doubleLongest / 2+ 1;
+                beg_pos = mid2 - doubleLongest / 2 + 1;
                 end_pos = mid2 + doubleLongest / 2 + 1;
             }
 
@@ -59,15 +59,12 @@ public:
             cerr << longest << doubleLongest << mid << mid2 << endl;
             exit(EXIT_FAILURE);
         }
-
-
-
     }
 
-private:
+  private:
     // these two can be compact as one expand around center
 
-    int checkPalindromeLength(const string& s, int pos) {
+    int checkPalindromeLength(const string &s, int pos) {
         if (pos < 0 || pos >= s.size()) {
             // invalid input
             return -1;
@@ -79,26 +76,26 @@ private:
         int bios = 1;
         for (; bios <= mb; ++bios) {
             if (s[pos - bios] != s[pos + bios]) {
-//                --bios;
+                //                --bios;
                 break;
             }
         }
         return (bios - 1) * 2 + 1;
     }
 
-    int checkDouble(const string& s, int pos) {
+    int checkDouble(const string &s, int pos) {
         if (pos < 0 || pos + 1 >= s.size()) {
             return -1;
         }
         if (s[pos] != s[pos + 1]) {
             return -1;
         }
-        int mb = min(pos - 0, int(s.size())- pos - 1);
+        int mb = min(pos - 0, int(s.size()) - pos - 1);
         int l = pos, r = pos + 1;
         int bios = 0;
         for (; bios <= mb; ++bios) {
             if (s[l - bios] != s[r + bios]) {
-//                --bios;
+                //                --bios;
                 break;
             }
         }
@@ -118,7 +115,8 @@ string Manacher(string s) {
     int mx = 0, id = 0, resLen = 0, resCenter = 0;
     for (int i = 1; i < t.size(); ++i) {
         p[i] = mx > i ? min(p[2 * id - i], mx - i) : 1;
-        while (t[i + p[i]] == t[i - p[i]]) ++p[i];
+        while (t[i + p[i]] == t[i - p[i]])
+            ++p[i];
         if (mx < i + p[i]) {
             mx = i + p[i];
             id = i;
@@ -131,7 +129,7 @@ string Manacher(string s) {
     return s.substr((resCenter - resLen) / 2, resLen - 1);
 }
 
-class CopyManachar: public Solution {
+class CopyManachar : public Solution {
     string longestPalindrome(string s) override {
         string t = "$#";
         for (int i = 0; i < s.size(); ++i) {
@@ -143,7 +141,8 @@ class CopyManachar: public Solution {
         int mx = 0, id = 0, resLen = 0, resCenter = 0;
         for (int i = 1; i < t.size(); ++i) {
             p[i] = mx > i ? min(p[2 * id - i], mx - i) : 1;
-            while (t[i + p[i]] == t[i - p[i]]) ++p[i];
+            while (t[i + p[i]] == t[i - p[i]])
+                ++p[i];
             if (mx < i + p[i]) {
                 mx = i + p[i];
                 id = i;
@@ -156,15 +155,15 @@ class CopyManachar: public Solution {
         return s.substr((resCenter - resLen) / 2, resLen - 1);
     }
 };
-class Manachar: public Solution {
-public:
+class Manachar : public Solution {
+  public:
     string longestPalindrome(string s) override {
         if (s.size() <= 1) {
             return s;
         }
 
         // build new string
-//        long str_size = s.size() * 2 + 1;
+        //        long str_size = s.size() * 2 + 1;
         int str_size = s.size() * 2 + 1;
 
         std::string manachar(str_size, '#');
@@ -181,14 +180,15 @@ public:
         int midCenter = 0;
         // loop
         for (int j = 1; j < str_size; ++j) {
-            int minBios;      // min bios with mirror
+            int minBios; // min bios with mirror
             if (manacharCnt[midCenter] + midCenter < j) {
                 minBios = 0;
             } else {
                 minBios = min(manacharCnt[2 * midCenter - j], j - midCenter);
             }
             int currentLength = checkPalindromeBios(manachar, j, minBios) - 1;
-//            cout << "j=" << j << ' ' << "length=" << currentLength << endl;
+            //            cout << "j=" << j << ' ' << "length=" << currentLength
+            //            << endl;
             if (currentLength >= maxLength) {
                 maxLength = currentLength;
                 center = j;
@@ -198,14 +198,13 @@ public:
                 midCenter = j;
             }
             manacharCnt[j] = currentLength;
-
         }
         // [beg, end] == [beg, end + 1)
         return s.substr(midCenter / 2, maxLength);
     }
 
-private:
-    int checkPalindromeBios(const string& s, int pos, int currentBios) {
+  private:
+    int checkPalindromeBios(const string &s, int pos, int currentBios) {
         if (pos < 0 || pos >= s.size()) {
             // invalid input
             return -1;
@@ -223,10 +222,9 @@ private:
     }
 };
 
-
 int main() {
-//  string data;
-//  cin >> data;
+    //  string data;
+    //  cin >> data;
     Manachar solution;
     cout << solution.longestPalindrome("abbac") << endl;
     cout << "\n\n";

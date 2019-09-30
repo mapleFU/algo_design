@@ -15,12 +15,12 @@
 #include <memory>
 
 class Solution {
-public:
+  public:
     //  2->3->4
     //  n  c
     //  3->3->4
     //  3---->4 , del 3
-    void deleteNode(ListNode* node) {
+    void deleteNode(ListNode *node) {
 
         node->val = node->next->val;
         node->next = node->next->next;
@@ -30,6 +30,4 @@ public:
     }
 };
 
-int main() {
-
-}
+int main() {}

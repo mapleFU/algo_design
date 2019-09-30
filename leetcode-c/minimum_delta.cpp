@@ -3,14 +3,14 @@
 //
 
 #include <iostream>
-#include <vector>
 #include <utility>
+#include <vector>
 
 using namespace std;
 
 constexpr int MAX_DELTA = 10000000;
 
-int count_min_ret(vector<int>& sumstack) {
+int count_min_ret(vector<int> &sumstack) {
     int cmin = MAX_DELTA;
     int cmax = -MAX_DELTA;
     for (int i = 0; i < sumstack.size(); ++i) {
@@ -24,10 +24,11 @@ int count_min_ret(vector<int>& sumstack) {
     return cmax - cmin;
 }
 
-int dfs(const vector<int>& data, vector<bool>& used_boolean, int used_data, int size, vector<int>& sumstack) {
+int dfs(const vector<int> &data, vector<bool> &used_boolean, int used_data,
+        int size, vector<int> &sumstack) {
     int min_ret = MAX_DELTA;
     if (used_data == size) {
-//        cout << "Touch the bottom" << '\n';
+        //        cout << "Touch the bottom" << '\n';
         return count_min_ret(sumstack);
     }
 
@@ -45,10 +46,11 @@ int dfs(const vector<int>& data, vector<bool>& used_boolean, int used_data, int 
             used_boolean[i] = true;
             used_boolean[j] = true;
             int current_sum = data[i] + data[j];
-//            cout << current_sum << '\n';
+            //            cout << current_sum << '\n';
             sumstack.push_back(current_sum);
 
-            int current = dfs(data, used_boolean, used_data + 2, size, sumstack);
+            int current =
+                dfs(data, used_boolean, used_data + 2, size, sumstack);
             if (min_ret > current) {
                 min_ret = current;
             }
@@ -61,14 +63,13 @@ int dfs(const vector<int>& data, vector<bool>& used_boolean, int used_data, int 
     return min_ret;
 }
 
-
 int main() {
 
     int array_size;
     cin >> array_size;
     vector<int> arrvec(array_size);
     vector<bool> boolvec(array_size, false);
-//    vector<int> sumstack(array_size);
+    //    vector<int> sumstack(array_size);
     vector<int> sumstack;
     int current;
     for (int i = 0; i < array_size; ++i) {
@@ -76,6 +77,4 @@ int main() {
         arrvec[i] = current;
     }
     cout << dfs(arrvec, boolvec, 0, array_size, sumstack) << '\n';
-
-
 }

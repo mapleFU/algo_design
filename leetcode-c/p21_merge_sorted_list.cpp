@@ -14,19 +14,19 @@
 #include "link_list.h"
 
 class Solution {
-    void stepNext(ListNode*& l) {
+    void stepNext(ListNode *&l) {
         if (l)
             l = l->next;
     }
 
-public:
-    ListNode* mergeTwoLists(ListNode* l1, ListNode* l2) {
-        ListNode* n1 = l1, *n2 = l2;
-        ListNode* new_list_head = nullptr;
-        ListNode* new_list_tail = nullptr;
+  public:
+    ListNode *mergeTwoLists(ListNode *l1, ListNode *l2) {
+        ListNode *n1 = l1, *n2 = l2;
+        ListNode *new_list_head = nullptr;
+        ListNode *new_list_tail = nullptr;
 
         while (true) {
-            ListNode* current;
+            ListNode *current;
             if (n1 && n2) {
 
                 if (n1->val < n2->val) {

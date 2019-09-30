@@ -11,12 +11,12 @@
  *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
  * };
  */
-#include <algorithm>
 #include "binary_tree.h"
+#include <algorithm>
 
 class Solution {
-public:
-    int maxDepth(TreeNode* root) {
+  public:
+    int maxDepth(TreeNode *root) {
         if (root == nullptr) {
             return 0;
         }

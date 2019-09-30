@@ -1,14 +1,14 @@
 //
 // Created by 付旭炜 on 2019/7/6.
 //
+#include <iostream>
 #include <string>
 #include <unordered_map>
-#include <iostream>
 
 using namespace std;
 
 class Solution {
-public:
+  public:
     // 做 max_delta 前保证 [beg, end] 是满足要求的串
     // end 是末尾游标
     int lengthOfLongestSubstring(string s) {
@@ -27,7 +27,7 @@ public:
                     beg = pos->second + 1;
                 }
             }
-//            cout << beg << ' ' << end << '\n';
+            //            cout << beg << ' ' << end << '\n';
             max_delta = max(max_delta, end - beg + 1);
             position_map[s[end]] = end;
             ++end;

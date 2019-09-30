@@ -67,3 +67,8 @@ add_executable(majority-element p169_majority_element.cpp)
 add_executable(fib-number p509_fibonacci_number.cpp)
 
 add_executable(super-pow p372_super_pow.cpp)
+
+add_executable(regular-expression-matching p10_regular_expression_matching.cpp)
+
+# TODO: this problem remains unfinished, please finish it later
+add_executable(valid-number p65_validate_number.cpp)

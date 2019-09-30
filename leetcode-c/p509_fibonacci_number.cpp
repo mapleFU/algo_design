@@ -4,7 +4,7 @@
 #include <cassert>
 
 class Solution {
-public:
+  public:
     int fib(int N) {
         if (N == 0) {
             return 0;
@@ -23,27 +23,20 @@ public:
     }
 };
 
-template <int Fib>
-struct Fibonacci {
+template <int Fib> struct Fibonacci {
     static constexpr int fib_counter() {
-        return Fibonacci<Fib - 1>::fib_counter() + Fibonacci<Fib - 2>::fib_counter();
+        return Fibonacci<Fib - 1>::fib_counter() +
+               Fibonacci<Fib - 2>::fib_counter();
     }
 };
 
-template <>
-struct Fibonacci<0> {
-    static constexpr int fib_counter() {
-        return 0;
-    }
+template <> struct Fibonacci<0> {
+    static constexpr int fib_counter() { return 0; }
 };
 
-template <>
-struct Fibonacci<1> {
-    static constexpr int fib_counter() {
-        return 1;
-    }
+template <> struct Fibonacci<1> {
+    static constexpr int fib_counter() { return 1; }
 };
-
 
 int main() {
     Solution solution;

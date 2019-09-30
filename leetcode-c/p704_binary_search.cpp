@@ -6,8 +6,8 @@
 using namespace std;
 
 class Solution {
-public:
-    int search(vector<int>& nums, int target) {
+  public:
+    int search(vector<int> &nums, int target) {
         size_t left = 0, right = nums.size();
         while (right - left > 1) {
             size_t mid = (right - left) / 2 + left;
@@ -24,7 +24,7 @@ public:
 };
 
 int main() {
-    vector<int> test_vec{-1,0,3,5,9,12};
+    vector<int> test_vec{-1, 0, 3, 5, 9, 12};
     int search_index = 9;
     Solution soln;
     cout << soln.search(test_vec, search_index) << '\n';

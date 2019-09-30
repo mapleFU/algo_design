@@ -8,11 +8,11 @@
 using namespace std;
 
 class Solution {
-public:
-    int majorityElement(const vector<int>& nums) {
+  public:
+    int majorityElement(const vector<int> &nums) {
         int current_counter = 0;
         std::optional<int> current = std::nullopt;
-        for (const int v: nums) {
+        for (const int v : nums) {
             if (current_counter == 0) {
                 // 丢掉前面的
                 current = v;

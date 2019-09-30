@@ -6,8 +6,8 @@
 using namespace std;
 
 class Solution {
-public:
-    bool searchMatrix(vector<vector<int>>& matrix, int target) {
+  public:
+    bool searchMatrix(vector<vector<int>> &matrix, int target) {
         // do asserts
 
         // do checkings
@@ -35,23 +35,19 @@ public:
     }
 };
 
-
 int main() {
 
-    vector<vector<int>> vec {
-            {1,   4,  7, 11, 15},
-            {2,   5,  8, 12, 19},
-            {3,   6,  9, 16, 22},
-            {10, 13, 14, 17, 24},
-            {18, 21, 23, 26, 30},
+    vector<vector<int>> vec{
+        {1, 4, 7, 11, 15},    {2, 5, 8, 12, 19},    {3, 6, 9, 16, 22},
+        {10, 13, 14, 17, 24}, {18, 21, 23, 26, 30},
     };
     Solution soln;
 
     assert(soln.searchMatrix(vec, 1) == true);
     assert(soln.searchMatrix(vec, 33) == false);
 
-    vector<vector<int>> vec2 {
-            {1,  1},
+    vector<vector<int>> vec2{
+        {1, 1},
     };
     assert(soln.searchMatrix(vec2, 2) == false);
 }

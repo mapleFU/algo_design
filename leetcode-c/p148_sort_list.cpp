@@ -12,23 +12,23 @@
  */
 
 #include "link_list.h"
-#include <string>
 #include <iostream>
-#include <vector>
 #include <sstream>
+#include <string>
+#include <vector>
 
 using namespace std;
 
 void trimLeftTrailingSpaces(string &input) {
-    input.erase(input.begin(), find_if(input.begin(), input.end(), [](int ch) {
-        return !isspace(ch);
-    }));
+    input.erase(input.begin(), find_if(input.begin(), input.end(),
+                                       [](int ch) { return !isspace(ch); }));
 }
 
 void trimRightTrailingSpaces(string &input) {
-    input.erase(find_if(input.rbegin(), input.rend(), [](int ch) {
-        return !isspace(ch);
-    }).base(), input.end());
+    input.erase(find_if(input.rbegin(), input.rend(),
+                        [](int ch) { return !isspace(ch); })
+                    .base(),
+                input.end());
 }
 
 vector<int> stringToIntegerVector(string input) {
@@ -46,14 +46,14 @@ vector<int> stringToIntegerVector(string input) {
     return output;
 }
 
-ListNode* stringToListNode(string input) {
+ListNode *stringToListNode(string input) {
     // Generate list from the input
     vector<int> list = stringToIntegerVector(input);
 
     // Now convert that list into linked list
-    ListNode* dummyRoot = new ListNode(0);
-    ListNode* ptr = dummyRoot;
-    for(int item : list) {
+    ListNode *dummyRoot = new ListNode(0);
+    ListNode *ptr = dummyRoot;
+    for (int item : list) {
         ptr->next = new ListNode(item);
         ptr = ptr->next;
     }
@@ -62,7 +62,7 @@ ListNode* stringToListNode(string input) {
     return ptr;
 }
 
-string listNodeToString(ListNode* node) {
+string listNodeToString(ListNode *node) {
     if (node == nullptr) {
         return "[]";
     }
@@ -76,18 +76,18 @@ string listNodeToString(ListNode* node) {
 }
 
 class Solution {
-    void stepNext(ListNode*& l) {
+    void stepNext(ListNode *&l) {
         if (l)
             l = l->next;
     }
 
-    ListNode* mergeTwoLists(ListNode* l1, ListNode* l2) {
-        ListNode* n1 = l1, *n2 = l2;
-        ListNode* new_list_head = nullptr;
-        ListNode* new_list_tail = nullptr;
+    ListNode *mergeTwoLists(ListNode *l1, ListNode *l2) {
+        ListNode *n1 = l1, *n2 = l2;
+        ListNode *new_list_head = nullptr;
+        ListNode *new_list_tail = nullptr;
 
         while (true) {
-            ListNode* current;
+            ListNode *current;
             if (n1 && n2) {
 
                 if (n1->val < n2->val) {
@@ -117,7 +117,7 @@ class Solution {
         }
     }
 
-    ListNode* middleNode(ListNode* head) {
+    ListNode *middleNode(ListNode *head) {
         // slow , fast pointer
         // 1 2 3 4 5
         // s F
@@ -131,50 +131,51 @@ class Solution {
         if (head == nullptr) {
             return head;
         }
-        ListNode* slow = head;
-        ListNode* fast = head->next;
+        ListNode *slow = head;
+        ListNode *fast = head->next;
         while (fast && fast->next) {
             fast = fast->next->next;
             slow = slow->next;
         }
         return slow;
     }
-public:
-    ListNode* sortList(ListNode* head) {
+
+  public:
+    ListNode *sortList(ListNode *head) {
         if (head == nullptr || head->next == nullptr) {
             return head;
         }
         if (head->next->next == nullptr) {
             if (head->val > head->next->val) {
-                ListNode* current_next = head->next;
+                ListNode *current_next = head->next;
                 current_next->next = head;
                 head->next = nullptr;
                 return current_next;
             }
         }
 
-        ListNode* middle = middleNode(head);
+        ListNode *middle = middleNode(head);
         // NOTICE: add split head here to find out it
-        ListNode* splitHead = middle->next;
+        ListNode *splitHead = middle->next;
         middle->next = nullptr;
 
         head = sortList(head);
-        splitHead= sortList(splitHead);
+        splitHead = sortList(splitHead);
 
-        ListNode* ret = mergeTwoLists(head, splitHead);
-//        cout << "Merge A: " << listNodeToString(head) << " And B:" << listNodeToString(middle) << " Got" << listNodeToString(ret) << endl;
+        ListNode *ret = mergeTwoLists(head, splitHead);
+        //        cout << "Merge A: " << listNodeToString(head) << " And B:" <<
+        //        listNodeToString(middle) << " Got" << listNodeToString(ret) <<
+        //        endl;
         return ret;
     };
 };
 
-
-
 int main() {
     string line;
     while (getline(cin, line)) {
-        ListNode* head = stringToListNode(line);
+        ListNode *head = stringToListNode(line);
         cout << listNodeToString(head) << endl;
-        ListNode* ret = Solution().sortList(head);
+        ListNode *ret = Solution().sortList(head);
 
         string out = listNodeToString(ret);
         cout << out << endl;

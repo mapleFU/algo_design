@@ -15,12 +15,11 @@ using namespace std;
  * 2...
  */
 class Solution {
-public:
+  public:
     string convert(string s, int numRows) {
         if (numRows <= 1) {
             return s;
         }
-
 
         // format
         auto format_edge = [numRows](int line_num, int cnt) {
@@ -31,9 +30,9 @@ public:
             return (numRows - 1) * 2 * cnt - line_num;
         };
         // 最大的 groups
-        int max_groups = (s.length() / (2 * numRows - 2)) ;
+        int max_groups = (s.length() / (2 * numRows - 2));
 
-        int remain_nodes = s.length() % (2 * numRows - 2) ;
+        int remain_nodes = s.length() % (2 * numRows - 2);
 
         int remain_lines = 0;
         if (remain_nodes == 0) {
@@ -45,7 +44,8 @@ public:
         }
         int sum_lines = max_groups * (numRows - 1) + remain_lines;
 
-//        cout << max_groups << ' ' << remain_lines << ' ' << remain_nodes << '\n';
+        //        cout << max_groups << ' ' << remain_lines << ' ' <<
+        //        remain_nodes << '\n';
         // 开始吧
         string ret_s;
         for (int i = 0; i < numRows; ++i) {
@@ -64,23 +64,24 @@ public:
             // 补 i 行的, 剩余的点比i大
             if (remain_nodes > i) {
                 auto pos = format_edge(i, max_groups);
-//                cout << "Pos " << pos << '\n';
+                //                cout << "Pos " << pos << '\n';
                 auto c1 = s[pos];
 
-//                cout << "push " << c1 << " in " << pos << '\n';
+                //                cout << "push " << c1 << " in " << pos <<
+                //                '\n';
                 ret_s.push_back(c1);
             }
-            if (remain_nodes > (numRows - 1) && remain_nodes > (2 * numRows - 2 - i)) {
+            if (remain_nodes > (numRows - 1) &&
+                remain_nodes > (2 * numRows - 2 - i)) {
                 int cn = incline_edge(i, max_groups + 1);
-//                cout << "Pos " << cn << '\n';
+                //                cout << "Pos " << cn << '\n';
                 auto c2 = s[cn];
-//                cout << "push " << c2 << " in " << cn << '\n';
+                //                cout << "push " << c2 << " in " << cn << '\n';
 
                 if (i != 0 && i != numRows - 1 && cn < s.length()) {
                     ret_s.push_back(c2);
                 }
             }
-
         }
 
         return ret_s;
@@ -92,14 +93,15 @@ int main() {
 
     cout << solution.convert("PAYPALISHIRING", 3) << '\n';
     cout << solution.convert("PAYPALISHIRING", 4) << '\n';
-    cout << solution.convert("PAYPALISHIRING", 3).compare("PAHNAPLSIIGYIR") << '\n';
-    cout << solution.convert("PAYPALISHIRING", 4).compare("PINALSIGYAHRPI") << '\n';
+    cout << solution.convert("PAYPALISHIRING", 3).compare("PAHNAPLSIIGYIR")
+         << '\n';
+    cout << solution.convert("PAYPALISHIRING", 4).compare("PINALSIGYAHRPI")
+         << '\n';
     cout << solution.convert("nmsl", 1).compare("nmsl") << '\n';
     cout << solution.convert("nmsl", 2).compare("nsml") << '\n';
 
-    string s("wlrbbmqbhcdarzowkkyhiddqscdxrjmowfrxsjybldbefsarcbynecdyggxxpklorellnmpapqfwkhopkmco");
+    string s("wlrbbmqbhcdarzowkkyhiddqscdxrjmowfrxsjybldbefsarcbynecdyggxxpklor"
+             "ellnmpapqfwkhopkmco");
     int cnt = 61;
     cout << solution.convert(s, cnt) << '\n';
-
-
 }

@@ -6,12 +6,11 @@
 using namespace std;
 
 class Solution {
-public:
+  public:
     string reverseStr(string s, int k) {
 
         string s_ret(s);
         for (int i = 0; i < s.size(); i += k) {
-
         }
     }
 };

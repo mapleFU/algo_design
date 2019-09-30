@@ -8,7 +8,7 @@
 using namespace std;
 
 class Solution {
-    void strip_0(string& s) {
+    void strip_0(string &s) {
         size_t i = 0;
         for (; i < s.size(); ++i) {
             if (s[i] != '0') {
@@ -18,7 +18,7 @@ class Solution {
         s = s.substr(i);
     }
 
-    int load_cnt(const string& s, size_t reverse_index) {
+    int load_cnt(const string &s, size_t reverse_index) {
         size_t slen = static_cast<int>(s.size());
         if (slen <= reverse_index) {
             return 0;
@@ -26,15 +26,14 @@ class Solution {
         return s[slen - reverse_index - 1] - '0';
     }
 
-
-    int& set_cnt(vector<int>& s, size_t reverse_index) {
+    int &set_cnt(vector<int> &s, size_t reverse_index) {
         size_t slen = static_cast<int>(s.size());
-        assert (slen > reverse_index);
+        assert(slen > reverse_index);
         return s[reverse_index];
     }
 
     template <typename expandable>
-    void expand(expandable& s, size_t reverse_index) {
+    void expand(expandable &s, size_t reverse_index) {
         size_t slen = static_cast<int>(s.size());
         if (slen <= reverse_index) {
             for (int i = 0; i <= reverse_index - slen; ++i) {
@@ -44,15 +43,17 @@ class Solution {
         }
     }
 
-    string multiply_long_short(string& s_long, string& s_short) {
+    string multiply_long_short(string &s_long, string &s_short) {
 
         vector<int> result;
-        for (size_t s_short_index = 0; s_short_index < s_short.size(); ++s_short_index) {
+        for (size_t s_short_index = 0; s_short_index < s_short.size();
+             ++s_short_index) {
             // s-short 的值 (INT)
             int short_cnt = load_cnt(s_short, s_short_index);
             // 长度改造成 s_long 的长度
             expand(result, s_short_index + s_long.size() - 1);
-            for (size_t s_long_index = 0; s_long_index < s_long.size(); ++s_long_index) {
+            for (size_t s_long_index = 0; s_long_index < s_long.size();
+                 ++s_long_index) {
                 int current = load_cnt(s_long, s_long_index) * short_cnt;
                 set_cnt(result, s_long_index + s_short_index) += current;
             }
@@ -72,11 +73,13 @@ class Solution {
         }
         string result_s;
         for (int j = 0; j < result.size(); ++j) {
-            result_s.push_back(static_cast<char>(result[result.size() - j - 1] + '0'));
+            result_s.push_back(
+                static_cast<char>(result[result.size() - j - 1] + '0'));
         }
         return result_s;
     }
-public:
+
+  public:
     string multiply(string num1, string num2) {
         strip_0(num1);
         strip_0(num2);

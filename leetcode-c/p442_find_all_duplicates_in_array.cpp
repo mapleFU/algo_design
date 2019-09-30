@@ -1,23 +1,24 @@
 //
 // Created by 付旭炜 on 2019/3/24.
 //
-#include <vector>
 #include <algorithm>
+#include <vector>
 
 #include "common_use.h"
 
 using namespace std;
 
 class Solution {
-public:
-    vector<int> findDuplicates(vector<int>& nums) {
+  public:
+    vector<int> findDuplicates(vector<int> &nums) {
         vector<int> vec;
         int handling_index = 0;
         while (handling_index < nums.size()) {
             int handling_number = nums[handling_index];
 
             // 真好放在应该放的位置上, 或者没有东西在这
-            if (handling_number == -1 || handling_number == handling_index + 1) {
+            if (handling_number == -1 ||
+                handling_number == handling_index + 1) {
                 // ++index
                 ++handling_index;
                 continue;
@@ -39,11 +40,11 @@ public:
 };
 
 class SolutionOne {
-public:
-    vector<int> findDuplicates(vector<int>& nums) {
+  public:
+    vector<int> findDuplicates(vector<int> &nums) {
         vector<int> ret;
         // 在 nums 中的 n
-        for (auto n: nums) {
+        for (auto n : nums) {
             // an 是对应的绝对位置
             int an = abs(n);
             // 如果对应的小于0，那么显然是重复的
