@@ -72,3 +72,9 @@ add_executable(regular-expression-matching p10_regular_expression_matching.cpp)
 
 # TODO: this problem remains unfinished, please finish it later
 add_executable(valid-number p65_validate_number.cpp)
+
+add_executable(symmetic-tree p101_symmetic_tree.cpp)
+
+add_executable(subtree-of-another-tree p572_subtree_of_another_tree.cpp)
+
+add_executable(lcs-of-bst p236_lowest_common_ancenstor_of_binary_tree.cpp)
