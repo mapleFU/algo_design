@@ -81,3 +81,5 @@ add_executable(lcs-of-bst p236_lowest_common_ancenstor_of_binary_tree.cpp)
 
 # TODO: this problem remains unfinished, please finish it later
 add_executable(atoi p8_atoi.cpp)
+
+add_executable(kth-largest-element-in-stream p703_kth_largest_element_in_stream.cpp)

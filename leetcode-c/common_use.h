@@ -25,8 +25,8 @@ void print_perms(const std::vector<int>& perms) {
     std::cout << '\n';
 }
 
-TreeNode* make_list(std::initializer_list<int > val_list) {
- 
-}
+//TreeNode* make_list(std::initializer_list<int > val_list) {
+//
+//}
 
 #endif //LEETCODE_C_COMMON_USE_H
