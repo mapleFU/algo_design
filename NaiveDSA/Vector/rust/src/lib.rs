@@ -1,6 +1,9 @@
 #![feature(ptr_internals)]
 
-pub mod MVector;
+extern crate alloc;
+
+#[allow(unused)]
+pub mod mvector;
 
 #[cfg(test)]
 mod tests {
