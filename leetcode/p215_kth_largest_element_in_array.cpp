@@ -4,8 +4,47 @@
 
 #include "common_use.h"
 #include <algorithm>
+#include <iterator>
+#include <future>
+#include <array>
 
 using namespace std;
+
+template <typename T, typename RandomIt = typename std::vector<T>::iterator>
+class ConcurrencySolution {
+    constexpr static int MinInterval = 4096 / sizeof(T);
+
+    static std::array<T, 2> linearFindKth(RandomIt beg, RandomIt end) {
+        std::sort(beg, end);
+        return {*beg, *(beg + 1)};
+    }
+
+    static std::array<T, 2> secondLargest(RandomIt beg, RandomIt end) {
+        auto dist = std::distance(beg, end);
+        if (dist < MinInterval) {
+            return linearFindKth(beg, end);
+        }
+
+        auto mid = dist / 2;
+        std::future<std::array<T, 2>> left = std::async(linearFindKth, beg, beg + mid);
+        std::future<std::array<T, 2>> right = std::async(linearFindKth, beg + mid, end);
+        auto l = left.get();
+        auto r = right.get();
+        for(auto &v: r) {
+            if (v > l[1]) {
+                std::swap(l[1], v);
+                if (l[0] < l[1]) {
+                    std::swap(l[0], l[1]);
+                }
+            }
+        }
+        return l;
+    }
+public:
+    T findSecondLargest(RandomIt beg, RandomIt end) {
+        return secondLargest(beg, end)[1];
+    }
+};
 
 class Solution {
     int linearFindKth(vector<int> &nums, int lo, int high, int k) {
@@ -79,4 +118,11 @@ int main() {
     std::sort(v2.begin(), v2.end());
     print_perms(v2);
     cout << soln.findKthLargest(test_vec, 2) << '\n';
+
+    test_vec = {3, 2, 3, 1,  2,  4, 5, 5, 6, 7, 7, 8, 2, 3,
+                1, 1, 1, 10, 11, 5, 6, 2, 4, 7, 8, 5, 6};
+
+    ConcurrencySolution<int > soln2;
+    cout << soln.findKthLargest(test_vec, 2) << '\n';
 }
+
