@@ -50,13 +50,15 @@ public:
     // dp[n] keeps (pos, val)
     // 1 <= arr.length <= 10^5
     // -10^4 <= arr[i], difference <= 10^4
-    // arr - diff
+    // so arr - diff should be in [-20000, 20000]
     constexpr static int MaxSize = 40002;
     constexpr static int PaddingSize = 20000;
 
+    // change the real index to array index
     inline int pad(int v) {
         return v + PaddingSize;
     }
+    // The reverse operator of `pad`
     inline int rev_pad(int pad_size) {
         return pad_size - PaddingSize;
     }

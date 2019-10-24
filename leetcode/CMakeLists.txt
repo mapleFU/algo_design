@@ -85,3 +85,8 @@ add_executable(atoi p8_atoi.cpp)
 add_executable(kth-largest-element-in-stream p703_kth_largest_element_in_stream.cpp)
 
 add_executable(longest-arithmetic-subsequence-of-given-difference p1218_Longest_Arithmetic_Subsequence_of_Given_Difference.cpp)
+
+add_executable(reverse-integer p7_reverse_integer.cpp)
+
+# TODO: Solve on this algorithm is wrong, please find the right way to solve it.
+add_executable(coin-change p322_coin_change.cpp)
