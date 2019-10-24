@@ -2,12 +2,10 @@
 // Created by 付旭炜 on 2019/3/24.
 //
 
-#ifndef LEETCODE_C_COMMON_USE_H
-#define LEETCODE_C_COMMON_USE_H
+#pragma "once"
 
 #include <iostream>
 #include <vector>
-
 
 
 struct TreeNode {
@@ -29,4 +27,3 @@ void print_perms(const std::vector<int>& perms) {
 //
 //}
 
-#endif //LEETCODE_C_COMMON_USE_H

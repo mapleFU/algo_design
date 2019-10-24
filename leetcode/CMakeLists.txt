@@ -83,3 +83,5 @@ add_executable(lcs-of-bst p236_lowest_common_ancenstor_of_binary_tree.cpp)
 add_executable(atoi p8_atoi.cpp)
 
 add_executable(kth-largest-element-in-stream p703_kth_largest_element_in_stream.cpp)
+
+add_executable(longest-arithmetic-subsequence-of-given-difference p1218_Longest_Arithmetic_Subsequence_of_Given_Difference.cpp)
