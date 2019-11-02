@@ -90,3 +90,14 @@ add_executable(reverse-integer p7_reverse_integer.cpp)
 
 # TODO: Solve on this algorithm is wrong, please find the right way to solve it.
 add_executable(coin-change p322_coin_change.cpp)
+
+# TODO: FINISH IT
+add_executable(odd-even-jump p975_odd_even_jump.cpp)
+
+# TODO: FINISH IT
+add_executable(add-stone-weight2 p1049_last_stone_weight2.cpp)
+
+# TODO: FINISH IT
+add_executable(word-break p139_word_break.cpp)
+
+add_executable(logest-increasing-subsequence p300_longest_increasing_subsequence.cpp)
