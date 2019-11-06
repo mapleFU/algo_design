@@ -2,7 +2,6 @@ use std::mem;
 use std::ops::{Deref, DerefMut};
 use std::{ptr, slice};
 
-#[allow(unused)]
 use crate::raw_vec::*;
 
 ///
@@ -13,10 +12,15 @@ use crate::raw_vec::*;
 ///    https://opensource.apple.com/source/clang/clang-211.10.1/src/docs/GetElementPtr.html#intro
 ///
 
-
 pub struct MVector<T> {
     buf: MRawVec<T>,
     len: usize,
+}
+
+impl<T> Default for MVector<T> {
+    fn default() -> Self {
+        MVector::new()
+    }
 }
 
 impl<T> MVector<T> {
@@ -29,11 +33,11 @@ impl<T> MVector<T> {
             // insert at `index`, meaning that [index, end) will be moved to [index + 1, end + 1)
             // [index] = elem.
             ptr::copy(
-                self.buf.ptr.as_ptr().offset(index as isize),
-                self.buf.ptr.as_ptr().offset((index + 1) as isize),
+                self.buf.ptr.as_ptr().add(index),
+                self.buf.ptr.as_ptr().add(index + 1),
                 self.len - index,
             );
-            ptr::write(self.buf.ptr.as_ptr().offset(index as isize), elem);
+            ptr::write(self.buf.ptr.as_ptr().add(index), elem);
         }
         self.len += 1;
     }
@@ -47,10 +51,10 @@ impl<T> MVector<T> {
         assert!(index < self.len, "index must < self.len in `remove`");
         self.len -= 1;
         unsafe {
-            let to_return = ptr::read(self.buf.ptr.as_ptr().offset(index as isize));
+            let to_return = ptr::read(self.buf.ptr.as_ptr().add(index));
             ptr::copy(
-                self.buf.ptr.as_ptr().offset((index + 1) as isize),
-                self.buf.ptr.as_ptr().offset(index as isize),
+                self.buf.ptr.as_ptr().add(index + 1),
+                self.buf.ptr.as_ptr().add(index),
                 self.len - index,
             );
             to_return
@@ -62,7 +66,7 @@ impl<T> MVector<T> {
             self.grow();
         }
         unsafe {
-            ptr::write(self.buf.ptr.as_ptr().offset(self.len as isize), elem);
+            ptr::write(self.buf.ptr.as_ptr().add(self.len), elem);
         }
         self.len += 1;
     }
@@ -71,19 +75,13 @@ impl<T> MVector<T> {
         if self.len == 0 {
             None
         } else {
-            let to_return = unsafe {
-                Some(ptr::read(
-                    self.buf.ptr.as_ptr().offset(self.len as isize - 1),
-                ))
-            };
+            let to_return = unsafe { Some(ptr::read(self.buf.ptr.as_ptr().add(self.len - 1))) };
             self.len -= 1;
             to_return
         }
     }
 
     pub fn new() -> Self {
-        assert_ne!(mem::size_of::<T>(), 0);
-        println!("new() called");
         MVector {
             buf: MRawVec::new(),
             len: 0,
@@ -153,7 +151,7 @@ impl<T> Iterator for MVectorIntoIter<T> {
         } else {
             unsafe {
                 let item = ptr::read(self.start);
-                self.start = self.start.offset(1);
+                self.start = self.start.add(1);
                 Some(item)
             }
         }
@@ -165,7 +163,6 @@ impl<T> IntoIterator for MVector<T> {
     type IntoIter = MVectorIntoIter<T>;
 
     fn into_iter(self) -> Self::IntoIter {
-
         // need to use ptr::read to unsafely move the buf out since it's
         // not Copy, and Vec implements Drop (so we can't destructure it).
         // Use but removed:
@@ -189,9 +186,9 @@ impl<T> IntoIterator for MVector<T> {
                     // can't offset off this pointer, it's not allocated!
                     ptr.as_ptr()
                 } else {
-                    ptr.as_ptr().offset(len as isize)
+                    ptr.as_ptr().add(len)
                 },
-                _buf:  buf,
+                _buf: buf,
             }
         }
     }

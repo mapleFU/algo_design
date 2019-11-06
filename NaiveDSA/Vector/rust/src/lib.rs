@@ -48,4 +48,21 @@ mod tests {
             }
         }
     }
+
+    #[test]
+    fn test_zst() {
+        let s: &str = "123";
+        let ptr: *const u8 = s.as_ptr();
+
+        unsafe {
+            assert_eq!(*ptr.add(1) as char, '2');
+            assert_eq!(*ptr.add(2) as char, '3');
+        }
+
+        let mut mzst: MVector<()> = MVector::default();
+        for _ in 0..1000 {
+            mzst.push(());
+        }
+        assert_eq!(mzst.len(), 1000);
+    }
 }

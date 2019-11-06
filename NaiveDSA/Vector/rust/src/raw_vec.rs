@@ -5,17 +5,18 @@ use std::ptr::Unique;
 /// Now that we've implemented it and identified actual logic duplication,
 /// this is a good time to perform some logic compression.
 /// 我个人感觉比较类似 C++ 的 `vector_base`
-pub struct MRawVec<T> {
+pub(crate) struct MRawVec<T> {
     pub(crate) ptr: Unique<T>,
     pub(crate) cap: usize,
 }
 
 impl<T> MRawVec<T> {
     pub fn new() -> MRawVec<T> {
-        assert_ne!(mem::size_of::<T>(), 0, "TODO: implement ZST support");
+        // !0 is max usize
+        let cap = if mem::size_of::<T>() == 0 { !0 } else { 0 };
         MRawVec {
             ptr: Unique::empty(),
-            cap: 0,
+            cap,
         }
     }
 
@@ -23,6 +24,10 @@ impl<T> MRawVec<T> {
         unsafe {
             let align = mem::align_of::<T>();
             let elem_sz = mem::size_of::<T>();
+
+            // since we set the capacity to usize::MAX when elem_size is
+            // 0, getting to here necessarily means the Vec is overfull.
+            assert_ne!(elem_sz, 0, "capacity overflow");
 
             let (new_cap, ptr) = if self.cap == 0 {
                 let ptr = alloc(Layout::from_size_align_unchecked(elem_sz, align));
@@ -68,7 +73,8 @@ impl<T> MRawVec<T> {
 
 impl<T> Drop for MRawVec<T> {
     fn drop(&mut self) {
-        if self.cap != 0 {
+        let elem_sz = mem::size_of::<T>();
+        if self.cap != 0 && elem_sz != 0 {
             let align = mem::align_of::<T>();
             let elem_sz = mem::size_of::<T>();
 
@@ -79,5 +85,11 @@ impl<T> Drop for MRawVec<T> {
                 );
             }
         }
+    }
+}
+
+impl<T> Default for MRawVec<T> {
+    fn default() -> Self {
+        Self::new()
     }
 }
