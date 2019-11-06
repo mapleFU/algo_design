@@ -41,11 +41,23 @@ impl<T> MVector<T> {
     /// panic:
     ///
     /// It will panic if index is out of bound.
-    pub fn remove(&mut self, index: usize) -> T {}
+    pub fn remove(&mut self, index: usize) -> T {
+        assert!(index < self.len, "index must < self.len in `remove`");
+        self.len -= 1;
+        unsafe {
+            let to_return = ptr::read(self.ptr.as_ptr().offset(index as isize));
+            ptr::copy(
+                self.ptr.as_ptr().offset((index + 1) as isize),
+                self.ptr.as_ptr().offset(index as isize),
+                self.len - index,
+            );
+            to_return
+        }
+    }
 
     pub fn push(&mut self, elem: T) {
         if self.len == self.cap {
-            self.grow()
+            self.grow();
         }
         unsafe {
             ptr::write(self.ptr.as_ptr().offset(self.len as isize), elem);
@@ -57,13 +69,15 @@ impl<T> MVector<T> {
         if self.len == 0 {
             None
         } else {
-            unsafe { Some(ptr::read(self.ptr.as_ptr().offset(self.len as isize - 1))) }
+            let to_return = unsafe { Some(ptr::read(self.ptr.as_ptr().offset(self.len as isize - 1))) };
+            self.len -= 1;
+            to_return
         }
     }
 
     pub fn new() -> Self {
-        assert_eq!(mem::size_of::<T>(), 0);
-
+        assert_ne!(mem::size_of::<T>(), 0);
+        println!("new() called");
         MVector {
             ptr: Unique::empty(),
             cap: 0,
@@ -115,6 +129,14 @@ impl<T> MVector<T> {
             self.ptr = Unique::new(ptr as *mut _).unwrap();
             self.cap = new_cap;
         }
+    }
+
+    pub fn len(&self) -> usize {
+        self.len
+    }
+
+    pub fn cap(&self) -> usize {
+        self.cap
     }
 }
 

@@ -7,8 +7,14 @@ pub mod mvector;
 
 #[cfg(test)]
 mod tests {
+    use crate::mvector::MVector;
+
     #[test]
-    fn it_works() {
-        assert_eq!(2 + 2, 4);
+    fn vec_push_back() {
+        let mut v: MVector<usize> = MVector::new();
+        for i in 1..2 {
+            v.push(i);
+            assert_eq!(v.len(), i);
+        }
     }
 }
