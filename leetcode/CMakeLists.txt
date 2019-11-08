@@ -98,6 +98,8 @@ add_executable(odd-even-jump p975_odd_even_jump.cpp)
 # TODO: FINISH IT
 add_executable(add-stone-weight2 p1049_last_stone_weight2.cpp)
 
+add_executable(lru-cache p146_LRU_Cache.cpp)
+
 add_executable(word-break p139_word_break.cpp)
 
 add_executable(logest-increasing-subsequence p300_longest_increasing_subsequence.cpp)
