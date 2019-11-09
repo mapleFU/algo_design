@@ -103,3 +103,13 @@ add_executable(lru-cache p146_LRU_Cache.cpp)
 add_executable(word-break p139_word_break.cpp)
 
 add_executable(logest-increasing-subsequence p300_longest_increasing_subsequence.cpp)
+
+add_executable(p136-single-number p136_single_number.cpp)
+
+add_executable(max-sub-array p53_maxium_sub_array.cpp)
+
+add_executable(valid-parenthese p20_valid_parenthese.cpp)
+
+add_executable(search_insert_pos p35_search_insert_position.cpp)
+
+add_executable(min-stack p155_min_stack.cpp)
