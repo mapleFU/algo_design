@@ -113,3 +113,5 @@ add_executable(valid-parenthese p20_valid_parenthese.cpp)
 add_executable(search_insert_pos p35_search_insert_position.cpp)
 
 add_executable(min-stack p155_min_stack.cpp)
+
+add_subdirectory(concurrency)
