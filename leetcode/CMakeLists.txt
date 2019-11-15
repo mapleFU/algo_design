@@ -43,6 +43,7 @@ add_executable(binary-search p704_binary_search.cpp)
 
 add_executable(search-in-2D-matrix-2 p240_search_in_2D_matrix.cpp)
 
+# The problem here is so naive.
 add_executable(find-the-duplicate-number p287_find_the_duplicate_number.cpp)
 
 add_executable(remove-duplicate-from-sorted-array p26_remove_duplicate_from_sorted_array.cpp)
@@ -113,5 +114,8 @@ add_executable(valid-parenthese p20_valid_parenthese.cpp)
 add_executable(search_insert_pos p35_search_insert_position.cpp)
 
 add_executable(min-stack p155_min_stack.cpp)
+
+add_executable(linked-list-cycle p141_linked_list_cycle.cpp)
+add_executable(linked-list-cycle2 p142_linked_list_cycle_2.cpp)
 
 add_subdirectory(concurrency)

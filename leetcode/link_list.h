@@ -63,5 +63,12 @@ bool list_checker(ListNode* list1, std::initializer_list<int > val_list) {
     }
 }
 
+inline ListNode* tail(ListNode* node) {
+    assert(node != nullptr);
+    while (node->next) {
+        node = node->next;
+    }
+    return node;
+}
 
 #endif //LEETCODE_C_LINK_LIST_H
