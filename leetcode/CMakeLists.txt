@@ -118,4 +118,7 @@ add_executable(min-stack p155_min_stack.cpp)
 add_executable(linked-list-cycle p141_linked_list_cycle.cpp)
 add_executable(linked-list-cycle2 p142_linked_list_cycle_2.cpp)
 
+add_executable(maximum-product-subarray p152_maximum_product_subarray.cpp)
+add_executable(number-of-islands p200_number_off_islands.cpp)
+
 add_subdirectory(concurrency)
