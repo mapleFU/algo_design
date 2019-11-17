@@ -121,4 +121,10 @@ add_executable(linked-list-cycle2 p142_linked_list_cycle_2.cpp)
 add_executable(maximum-product-subarray p152_maximum_product_subarray.cpp)
 add_executable(number-of-islands p200_number_off_islands.cpp)
 
+# TODO: finish it.
+add_executable(course-schedule p207_course_schedule.cpp)
+
+# TODO: please optimize it.
+add_executable(implement-trie p208_implement_trie.cpp)
+
 add_subdirectory(concurrency)
