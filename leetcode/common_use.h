@@ -16,7 +16,8 @@ struct TreeNode {
 };
 
 
-void print_perms(const std::vector<int>& perms) {
+template<typename T>
+void print_perms(const std::vector<T>& perms) {
     for (int i = 0; i < perms.size(); ++i) {
         std::cout << perms[i] << ' ';
     }

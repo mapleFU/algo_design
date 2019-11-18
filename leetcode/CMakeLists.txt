@@ -127,4 +127,6 @@ add_executable(course-schedule p207_course_schedule.cpp)
 # TODO: please optimize it.
 add_executable(implement-trie p208_implement_trie.cpp)
 
+add_executable(remove-invalid-parentheses p301_remove_invalid_parentheses.cpp)
+
 add_subdirectory(concurrency)
