@@ -129,4 +129,6 @@ add_executable(implement-trie p208_implement_trie.cpp)
 
 add_executable(remove-invalid-parentheses p301_remove_invalid_parentheses.cpp)
 
+add_executable(range-sum-query p307_range_sum_query.cpp)
+
 add_subdirectory(concurrency)
