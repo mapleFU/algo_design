@@ -32,10 +32,11 @@ class Solution {
                 }
             }
         }
-//        print_perms(dp_vec);
+        print_perms(dp_vec);
 //        for (const auto& dp: dp_vec) {
 //            print_perms(dp);
 //        }
+//        print_perms(dp_vec);
 
         return dp_vec[sx][sy];
     }

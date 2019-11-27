@@ -131,4 +131,6 @@ add_executable(remove-invalid-parentheses p301_remove_invalid_parentheses.cpp)
 
 add_executable(range-sum-query p307_range_sum_query.cpp)
 
+add_executable(edit-distance p72_edit_distance.cpp)
+
 add_subdirectory(concurrency)
