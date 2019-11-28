@@ -23,10 +23,7 @@ template <class T> struct is_vector : public std::false_type {};
 
 template <class T> struct is_vector<std::vector<T>> : public std::true_type {};
 
-template <typename T>
-void print_perms(
-        const std::vector<T> &perms,
-        typename std::enable_if<!is_vector<T>::value>::type * = nullptr) {
+template <typename T> void print_perms(const std::vector<T> &perms) {
     for (int i = 0; i < perms.size(); ++i) {
         std::cout << perms[i] << ' ';
     }
@@ -34,12 +31,8 @@ void print_perms(
 }
 
 template <typename VecT>
-void print_perms(
-    const std::vector<VecT> &perms,
-    typename std::enable_if<is_vector<VecT>::value>::type * = nullptr) {
+void print_perms(const std::vector<std::vector<VecT>> &perms) {
     for (int i = 0; i < perms.size(); ++i) {
-        print_perms<typename VecT::value_type>(perms[i]);
+        print_perms(perms[i]);
     }
 }
-
-
