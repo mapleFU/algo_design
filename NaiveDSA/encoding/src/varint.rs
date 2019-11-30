@@ -38,19 +38,20 @@ impl<T: int::PrimInt + CheckedNeg> Varint for T {
         // 1 is msb.
         // 7 is end.
         let mut result = Vec::new();
+        let max_group_val = Self::from(GROUP_VAL).unwrap();
         while unsigned != Self::zero() {
             let end;
             let current;
-            if unsigned >= Self::from(GROUP_VAL).unwrap() {
+            if unsigned >= max_group_val {
                 end = 1;
-                current = unsigned % Self::from(GROUP_VAL).unwrap();
-                unsigned = unsigned / Self::from(GROUP_VAL).unwrap();
+                current = unsigned % max_group_val;
+                unsigned = unsigned / max_group_val;
             } else {
                 end = 0;
                 current = unsigned;
                 unsigned = Self::zero();
             }
-            // write
+            // current max be less than u8, so it will not panic.
             write_group(&mut result, end != 0, current.to_u8().unwrap() );
         }
 
@@ -76,6 +77,8 @@ impl<T: int::PrimInt + CheckedNeg> Varint for T {
                 break;
             }
         }
+        // current should be an u64, and if data could not be cast from u64,
+        // the program will panic.
         Self::from(current).unwrap().zig_decoding()
     }
 }
