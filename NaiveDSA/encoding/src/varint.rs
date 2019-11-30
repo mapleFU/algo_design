@@ -8,11 +8,11 @@
 /// least significant group first.
 ///
 /// I implement this with the cppreference bit-field part: https://en.cppreference.com/w/cpp/language/bit_field
-
 use super::zigzag::ZigZag;
-use num_traits::{int, CheckedNeg};
 #[allow(unused)]
-use num_traits::cast::{FromPrimitive, AsPrimitive};
+use num_traits::cast::{AsPrimitive, FromPrimitive};
+use num_traits::int;
+use num_traits::sign::Signed;
 
 pub trait Varint {
     fn varint(s: Self) -> Vec<u8>;
@@ -31,7 +31,7 @@ fn write_group(data: &mut Vec<u8>, is_end: bool, val: u8) {
     data.push(v);
 }
 
-impl<T: int::PrimInt + CheckedNeg> Varint for T {
+impl<T: int::PrimInt + Signed> Varint for T {
     fn varint(i: Self) -> Vec<u8> {
         let mut unsigned = i.zig_encoding();
         // 1 7 for a number
@@ -52,7 +52,7 @@ impl<T: int::PrimInt + CheckedNeg> Varint for T {
                 unsigned = Self::zero();
             }
             // current max be less than u8, so it will not panic.
-            write_group(&mut result, end != 0, current.to_u8().unwrap() );
+            write_group(&mut result, end != 0, current.to_u8().unwrap());
         }
 
         result
@@ -64,7 +64,7 @@ impl<T: int::PrimInt + CheckedNeg> Varint for T {
         for arg in v {
             let continuing: bool;
             let mut val = arg;
-            if arg > GROUP_MAX as u8{
+            if arg > GROUP_MAX as u8 {
                 continuing = false;
                 val -= 128;
             } else {
@@ -89,10 +89,7 @@ mod test {
 
     #[test]
     fn test_encoding() {
-        let test_arg: Vec<(i32, usize)> = vec![
-            (1, 1),
-            (300, 2)
-        ];
+        let test_arg: Vec<(i32, usize)> = vec![(1, 1), (300, 2)];
 
         for (k, v) in test_arg {
             let var = i32::varint(k);
