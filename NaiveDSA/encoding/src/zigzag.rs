@@ -1,8 +1,6 @@
 /// ZigZag is an algorithm according to this note: https://gist.github.com/mfuerstenau/ba870a29e16536fdbaba
 /// It was common used by some rpc protocol, like protobuf and avro.
 use num_traits::int;
-#[allow(unused)]
-use num_traits::sign::Signed;
 use num_traits::CheckedNeg;
 use std::mem;
 

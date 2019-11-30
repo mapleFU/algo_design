@@ -11,8 +11,8 @@
 
 use super::zigzag::ZigZag;
 use num_traits::{int, CheckedNeg};
+#[allow(unused)]
 use num_traits::cast::{FromPrimitive, AsPrimitive};
-use std::mem;
 
 pub trait Varint {
     fn varint(s: Self) -> Vec<u8>;
@@ -71,6 +71,10 @@ impl<T: int::PrimInt + CheckedNeg> Varint for T {
             }
             current += val as u64 * times;
             times *= 128;
+
+            if !continuing {
+                break;
+            }
         }
         Self::from(current).unwrap().zig_decoding()
     }
