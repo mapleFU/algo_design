@@ -10,7 +10,7 @@ pub trait ZigZag {
     fn zig_decoding(self) -> Self;
 }
 
-impl<T: int::PrimInt> ZigZag for T {
+impl<T: int::PrimInt + std::ops::Neg<Output = Self>> ZigZag for T {
     fn zig_encoding(self) -> Self {
         // zigzag for integer
         let sz: usize = mem::size_of::<Self>() * 8;
@@ -19,8 +19,7 @@ impl<T: int::PrimInt> ZigZag for T {
     }
 
     fn zig_decoding(self) -> Self {
-        //        self.unsigned_shr(1.into()) ^ -self.bitand(1.into())
-        unimplemented!()
+        self.unsigned_shr(1) ^ -self.bitand(Self::from(1).unwrap())
     }
 }
 
@@ -37,6 +36,14 @@ mod test {
                 // i >= 0
                 assert_eq!(i * 2, i.zig_encoding());
             }
+        }
+    }
+
+    #[test]
+    fn test_decoding() {
+        for i in -100..=100 {
+            let v = i.zig_encoding();
+            assert_eq!(i, v.zig_decoding());
         }
     }
 }
