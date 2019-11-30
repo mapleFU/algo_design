@@ -7,6 +7,7 @@
 #include <iostream>
 #include <type_traits>
 #include <vector>
+#include <stack>
 
 struct TreeNode {
     int val;
