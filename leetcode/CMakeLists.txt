@@ -138,4 +138,7 @@ add_executable(edit-distance p72_edit_distance.cpp)
 
 add_executable(longest-valid-parenthese p32_longest_valid_parenthese.cpp)
 
+# TODO: finish it.
+add_executable(Sliding-Window-Maximum p239_sliding_window_maximum.cpp)
+
 add_subdirectory(concurrency)
