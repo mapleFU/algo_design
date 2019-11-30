@@ -1,3 +1,9 @@
+use super::zigzag::ZigZag;
+#[allow(unused)]
+use num_traits::cast::{AsPrimitive, FromPrimitive};
+use num_traits::int;
+use num_traits::sign::Signed;
+
 /// https://developers.google.com/protocol-buffers/docs/encoding#varints
 /// Varints is used in protobuf. Varints are a method of serializing integers using one or more bytes.
 /// Smaller numbers take a smaller number of bytes.
@@ -8,14 +14,10 @@
 /// least significant group first.
 ///
 /// I implement this with the cppreference bit-field part: https://en.cppreference.com/w/cpp/language/bit_field
-use super::zigzag::ZigZag;
-#[allow(unused)]
-use num_traits::cast::{AsPrimitive, FromPrimitive};
-use num_traits::int;
-use num_traits::sign::Signed;
-
 pub trait Varint {
+    /// Change a signed int to varint vector.
     fn varint(s: Self) -> Vec<u8>;
+    /// Parse varint vector to signed int.
     fn from_varint(v: Vec<u8>) -> Self;
 }
 

@@ -1,9 +1,10 @@
-/// ZigZag is an algorithm according to this note: https://gist.github.com/mfuerstenau/ba870a29e16536fdbaba
-/// It was common used by some rpc protocol, like protobuf and avro.
 use num_traits::int;
 use num_traits::sign::Signed;
 use std::mem;
 
+/// ZigZag is an algorithm according to this note: https://gist.github.com/mfuerstenau/ba870a29e16536fdbaba
+/// It was common used by some rpc protocol, like protobuf and avro.
+///
 /// Zigzag is implements for all signed int.
 /// The encoding number is actually an unsigned int, but it was represented the same as signed int.
 /// If you want to interpret it, please use `as u_` to get it.
