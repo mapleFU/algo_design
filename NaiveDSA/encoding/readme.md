@@ -38,3 +38,12 @@ Http 里面很容易用 Json 来表示，但是我们也要考虑：
 ## 消息的压缩
 
 为了流量，Hadoop 之类的系统， RPC 的时候会对消息进行压缩
+
+## Varint
+
+我实现了一个简单的 varint, 代码放在[这里](https://github.com/mapleFU/algo_design/tree/master/NaiveDSA/encoding) , 他是 grpc 协议的一部分
+
+* 对 integer 采用 msb 的格式编码，8个 bit 为一个 group, 第一位表示是否完结
+* 8个为一个 group
+* 采用 zigzag, 把 int 映射到 unsigned int.
+

@@ -1,3 +1,9 @@
+use super::zigzag::ZigZag;
+#[allow(unused)]
+use num_traits::cast::{AsPrimitive, FromPrimitive};
+use num_traits::int;
+use num_traits::sign::Signed;
+
 /// https://developers.google.com/protocol-buffers/docs/encoding#varints
 /// Varints is used in protobuf. Varints are a method of serializing integers using one or more bytes.
 /// Smaller numbers take a smaller number of bytes.
@@ -8,14 +14,10 @@
 /// least significant group first.
 ///
 /// I implement this with the cppreference bit-field part: https://en.cppreference.com/w/cpp/language/bit_field
-
-use super::zigzag::ZigZag;
-use num_traits::{int, CheckedNeg};
-#[allow(unused)]
-use num_traits::cast::{FromPrimitive, AsPrimitive};
-
 pub trait Varint {
+    /// Change a signed int to varint vector.
     fn varint(s: Self) -> Vec<u8>;
+    /// Parse varint vector to signed int.
     fn from_varint(v: Vec<u8>) -> Self;
 }
 
@@ -31,27 +33,28 @@ fn write_group(data: &mut Vec<u8>, is_end: bool, val: u8) {
     data.push(v);
 }
 
-impl<T: int::PrimInt + CheckedNeg> Varint for T {
+impl<T: int::PrimInt + Signed> Varint for T {
     fn varint(i: Self) -> Vec<u8> {
         let mut unsigned = i.zig_encoding();
         // 1 7 for a number
         // 1 is msb.
         // 7 is end.
         let mut result = Vec::new();
+        let max_group_val = Self::from(GROUP_VAL).unwrap();
         while unsigned != Self::zero() {
             let end;
             let current;
-            if unsigned >= Self::from(GROUP_VAL).unwrap() {
+            if unsigned >= max_group_val {
                 end = 1;
-                current = unsigned % Self::from(GROUP_VAL).unwrap();
-                unsigned = unsigned / Self::from(GROUP_VAL).unwrap();
+                current = unsigned % max_group_val;
+                unsigned = unsigned / max_group_val;
             } else {
                 end = 0;
                 current = unsigned;
                 unsigned = Self::zero();
             }
-            // write
-            write_group(&mut result, end != 0, current.to_u8().unwrap() );
+            // current max be less than u8, so it will not panic.
+            write_group(&mut result, end != 0, current.to_u8().unwrap());
         }
 
         result
@@ -63,7 +66,7 @@ impl<T: int::PrimInt + CheckedNeg> Varint for T {
         for arg in v {
             let continuing: bool;
             let mut val = arg;
-            if arg > GROUP_MAX as u8{
+            if arg > GROUP_MAX as u8 {
                 continuing = false;
                 val -= 128;
             } else {
@@ -76,6 +79,8 @@ impl<T: int::PrimInt + CheckedNeg> Varint for T {
                 break;
             }
         }
+        // current should be an u64, and if data could not be cast from u64,
+        // the program will panic.
         Self::from(current).unwrap().zig_decoding()
     }
 }
@@ -86,10 +91,7 @@ mod test {
 
     #[test]
     fn test_encoding() {
-        let test_arg: Vec<(i32, usize)> = vec![
-            (1, 1),
-            (300, 2)
-        ];
+        let test_arg: Vec<(i32, usize)> = vec![(1, 1), (300, 2)];
 
         for (k, v) in test_arg {
             let var = i32::varint(k);
