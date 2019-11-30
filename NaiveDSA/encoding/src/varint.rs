@@ -38,7 +38,7 @@ impl<T: int::PrimInt + CheckedNeg> Varint for T {
         // 1 is msb.
         // 7 is end.
         let mut result = Vec::new();
-        while unsigned != Self::from(0).unwrap() {
+        while unsigned != Self::zero() {
             let end;
             let current;
             if unsigned >= Self::from(GROUP_VAL).unwrap() {
@@ -48,7 +48,7 @@ impl<T: int::PrimInt + CheckedNeg> Varint for T {
             } else {
                 end = 0;
                 current = unsigned;
-                unsigned = Self::from(0).unwrap();
+                unsigned = Self::zero();
             }
             // write
             write_group(&mut result, end != 0, current.to_u8().unwrap() );

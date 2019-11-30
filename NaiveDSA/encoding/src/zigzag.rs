@@ -17,7 +17,7 @@ impl<T: int::PrimInt + CheckedNeg> ZigZag for T {
     }
 
     fn zig_decoding(self) -> Self {
-        self.unsigned_shr(1) ^ self.bitand(Self::from(1).unwrap()).checked_neg().unwrap()
+        self.unsigned_shr(1) ^ self.bitand(Self::one()).checked_neg().unwrap()
     }
 }
 
