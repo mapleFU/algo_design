@@ -1,9 +1,8 @@
 extern crate num;
 extern crate num_traits;
 
-mod zigzag;
 mod varint;
-
+mod zigzag;
 
 #[cfg(test)]
 mod tests {
