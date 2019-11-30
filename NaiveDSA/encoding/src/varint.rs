@@ -38,13 +38,12 @@ impl<T: int::PrimInt + CheckedNeg> Varint for T {
         // 1 is msb.
         // 7 is end.
         let mut result = Vec::new();
-        while !unsigned.eq(&Self::from(0).unwrap()) {
+        while unsigned != Self::from(0).unwrap() {
             let end;
             let current;
             if unsigned >= Self::from(GROUP_VAL).unwrap() {
                 end = 1;
                 current = unsigned % Self::from(GROUP_VAL).unwrap();
-                // TODO: change this
                 unsigned = unsigned / Self::from(GROUP_VAL).unwrap();
             } else {
                 end = 0;
@@ -60,6 +59,7 @@ impl<T: int::PrimInt + CheckedNeg> Varint for T {
 
     fn from_varint(v: Vec<u8>) -> Self {
         let mut current: u64 = 0;
+        let mut times = 1;
         for arg in v {
             let continuing: bool;
             let mut val = arg;
@@ -69,10 +69,10 @@ impl<T: int::PrimInt + CheckedNeg> Varint for T {
             } else {
                 continuing = true;
             }
-            current *= 128;
-            current += val as u64;
+            current += val as u64 * times;
+            times *= 128;
         }
-        Self::from(current).unwrap()
+        Self::from(current).unwrap().zig_decoding()
     }
 }
 
