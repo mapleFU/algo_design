@@ -3,7 +3,7 @@ project(leetcode-c)
 set(CMAKE_C_COMPILER "clang")
 set(CMAKE_CXX_COMPILER "clang++")
 
-set (CMAKE_CXX_STANDARD 17)
+set (CMAKE_CXX_STANDARD 20)
 cmake_minimum_required(VERSION 3.12)
 
 add_library(lib p344_reverse_string.c p541_preverse_string_2.cpp)
@@ -135,5 +135,7 @@ add_executable(remove-invalid-parentheses p301_remove_invalid_parentheses.cpp)
 add_executable(range-sum-query p307_range_sum_query.cpp)
 
 add_executable(edit-distance p72_edit_distance.cpp)
+
+add_executable(longest-valid-parenthese p32_longest_valid_parenthese.cpp)
 
 add_subdirectory(concurrency)
