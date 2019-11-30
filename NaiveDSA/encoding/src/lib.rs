@@ -1,4 +1,4 @@
-extern crate num;
+extern crate bit_field;
 extern crate num_traits;
 
 mod varint;
