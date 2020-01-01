@@ -141,4 +141,8 @@ add_executable(longest-valid-parenthese p32_longest_valid_parenthese.cpp)
 # TODO: finish it.
 add_executable(Sliding-Window-Maximum p239_sliding_window_maximum.cpp)
 
+add_executable(merge-two-binary-trees p617_merge_two_binary_trees.cpp)
+
+add_executable(counting-bits p338_counting_bits.cpp)
+
 add_subdirectory(concurrency)
