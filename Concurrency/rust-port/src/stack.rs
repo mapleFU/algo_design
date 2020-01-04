@@ -75,12 +75,13 @@ impl<T: Copy> Stack<T> for CondStack<T> {
     fn pop_wait(&self) -> T {
         let result = self.guard.guard.lock();
         let mut entity: MutexGuard<LinkedList<T>> = result.unwrap();
+
         if !entity.is_empty() {
-            entity.pop_back().unwrap()
+            return entity.pop_back().unwrap();
         } else {
-            let e = self.cond.wait(entity);
-            let mut entity = e.unwrap();
-            entity.pop_back().unwrap()
+            let e = self.cond.wait_until(entity, |cfg| cfg.len() > 0);
+            entity = e.unwrap();
+            return entity.pop_back().unwrap();
         }
     }
 }
