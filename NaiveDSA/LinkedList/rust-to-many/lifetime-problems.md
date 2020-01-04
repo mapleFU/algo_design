@@ -210,5 +210,62 @@ impl<'a, T> Iterator for ListIter<'a, T> {
 
 这里有一些奇葩东西：
 
-* `take` vs `as_ref`:
-  * 
+
+
+```rust
+pub struct NmMutIter<'a, T> {
+    current_iter: &'a mut Link<T>,
+}
+
+impl<'a, T> Iterator for NmMutIter<'a, T> {
+    type Item = &'a mut T;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        self.current_iter.as_mut().map(|mut node| {
+            mem::replace(&mut self.current_iter, &mut node.next);
+            &mut node.val
+        })
+    }
+}
+```
+
+一编译就炸
+
+> ```
+> error[E0495]: cannot infer an appropriate lifetime for autoref due to conflicting requirements
+>    --> src/first.rs:163:27
+>     |
+> 163 |         self.current_iter.as_mut().map(|mut node| {
+>     |                           ^^^^^^
+>     |
+> note: first, the lifetime cannot outlive the anonymous lifetime #1 defined on the method body at 162:5...
+>    --> src/first.rs:162:5
+>     |
+> 162 | /     fn next(&mut self) -> Option<Self::Item> {
+> 163 | |         self.current_iter.as_mut().map(|mut node| {
+> 164 | |             mem::replace(&mut self.current_iter, &mut node.next);
+> 165 | |             &mut node.val
+> 166 | |         })
+> 167 | |     }
+>     | |_____^
+> note: ...so that reference does not outlive borrowed content
+>    --> src/first.rs:163:9
+>     |
+> 163 |         self.current_iter.as_mut().map(|mut node| {
+>     |         ^^^^^^^^^^^^^^^^^
+> note: but, the lifetime must be valid for the lifetime 'a as defined on the impl at 159:6...
+>    --> src/first.rs:159:6
+>     |
+> 159 | impl<'a, T> Iterator for NmMutIter<'a, T> {
+>     |      ^^
+> note: ...so that reference does not outlive borrowed content
+>    --> src/first.rs:164:50
+>     |
+> 164 |             mem::replace(&mut self.current_iter, &mut node.next);
+>     |                                                  ^^^^^^^^^^^^^^
+> 
+> error: aborting due to previous error
+> ```
+
+实际上，&mut 的时候 返回会泄漏 `&mut`, 所以这里至少应该修改成 `Option<&'a mut Link<T>>`, 否则应该会炸掉。
+
