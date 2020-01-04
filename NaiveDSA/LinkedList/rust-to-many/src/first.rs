@@ -5,35 +5,27 @@ pub struct Node<T> {
     next: Link<T>,
 }
 
-pub enum Link<T> {
-    Nil,
-    Node(Box<Node<T>>),
-}
+pub type Link<T> = Option<Box<Node<T>>>;
 
-#[derive(Default)]
 pub struct List<T> {
     head: Link<T>,
 }
 
-impl<T> Default for Link<T> {
+impl<T> Default for List<T> {
     fn default() -> Self {
-        Link::Nil
+        List { head: None }
     }
 }
 
 impl<T> List<T> {
-    //    fn replace_head_with_next(&mut self, next: Link<T>) -> Link<T> {
-    //        unimplemented!()
-    //    }
-
     pub fn push(&mut self, t: T) {
         let new_node = Node {
             val: t,
             // head first replace as 0
-            next: mem::replace(&mut self.head, Link::Nil),
+            next: mem::replace(&mut self.head, None),
         };
         // then fill new val to it.
-        self.head = Link::Node(Box::new(new_node));
+        self.head = Some(Box::new(new_node));
     }
 
     pub fn pop(&mut self) -> Option<T> {
@@ -51,24 +43,108 @@ impl<T> List<T> {
         //            }
         //        }
         // operation with head.
-        match mem::replace(&mut self.head, Link::Nil) {
-            Link::Nil => None,
-            Link::Node(node) => {
+        match mem::replace(&mut self.head, None) {
+            None => None,
+            Some(node) => {
                 self.head = node.next;
                 Some(node.val)
             }
+        }
+    }
+
+    pub fn peek(&self) -> Option<&T> {
+        match &self.head {
+            None => None,
+            Some(node) => Some(&node.val),
         }
     }
 }
 
 impl<T> Drop for List<T> {
     fn drop(&mut self) {
-        while let Link::Node(node) = mem::replace(&mut self.head, Link::Nil) {
-            mem::replace(&mut self.head, node.next) ;
-        };
+        while let Some(node) = mem::replace(&mut self.head, None) {
+            mem::replace(&mut self.head, node.next);
+        }
     }
 }
 
+pub struct ListIntoIter<T> {
+    current_head: List<T>,
+}
+
+impl<T> Iterator for ListIntoIter<T> {
+    type Item = T;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        self.current_head.pop()
+    }
+}
+
+impl<T> IntoIterator for List<T> {
+    type Item = T;
+    type IntoIter = ListIntoIter<T>;
+
+    fn into_iter(self) -> Self::IntoIter {
+        //        let n = ListIntoIter {
+        //            current_head: self.head,
+        //        };
+        //        mem::forget(self);
+        //        n
+        ListIntoIter { current_head: self }
+    }
+}
+
+pub struct ListIter<'a, T> {
+    current_iter: &'a Link<T>,
+}
+
+impl<'a, T> Iterator for ListIter<'a, T> {
+    type Item = &'a T;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        match self.current_iter {
+            None => None,
+            Some(node) => {
+                let v = Some(&node.val);
+                self.current_iter = &node.next;
+                v
+            }
+        }
+    }
+}
+
+impl<T> List<T> {
+    pub fn iter(&self) -> ListIter<T> {
+        ListIter {
+            current_iter: &self.head,
+        }
+    }
+
+    pub fn iter_mut(&mut self) -> ListMutIter<T> {
+        ListMutIter {
+            current_iter: self.head.as_mut(),
+        }
+    }
+}
+
+pub struct ListMutIter<'a, T> {
+    current_iter: Option<&'a mut Box<Node<T>>>,
+}
+
+impl<'a, T> Iterator for ListMutIter<'a, T> {
+    type Item = &'a mut T;
+
+    fn next(&mut self) -> Option<&'a mut T> {
+        match self.current_iter.take() {
+            None => None,
+            Some(node) => {
+                self.current_iter = node.next.as_mut();
+                // outlives body
+                Some(&mut node.val)
+            }
+        }
+    }
+}
 
 #[cfg(test)]
 mod test {
@@ -95,6 +171,17 @@ mod test {
 
         for _ in 0..10 {
             assert_eq!(l.pop(), None);
+        }
+    }
+
+    #[test]
+    fn test_peak() {
+        let mut l = List::default();
+        let mut to_cmp = None;
+        for i in 0..10 {
+            assert_eq!(l.peek().map(|v: &i32| v.to_owned()), to_cmp);
+            to_cmp = Some(i);
+            l.push(i);
         }
     }
 }
