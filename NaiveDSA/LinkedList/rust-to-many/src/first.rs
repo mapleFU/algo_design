@@ -29,28 +29,6 @@ impl<T> List<T> {
     }
 
     pub fn pop(&mut self) -> Option<T> {
-        //        match &mut self.head {
-        //            // self.head == null
-        //            Link::Nil => {
-        //                None
-        //            },
-        //            Link::Node(s) => {
-        //                // head = head->next;
-        //                // return old head
-        //                let (val, next) = (s.val, s.next);
-        //                self.head = next;
-        //                Some(val)
-        //            }
-        //        }
-
-        //        match mem::replace(&mut self.head, None) {
-        //            None => None,
-        //            Some(node) => {
-        //                self.head = node.next;
-        //                Some(node.val)
-        //            }
-        //        }
-
         // operation with head.
         mem::replace(&mut self.head, None).map(|node| {
             self.head = node.next;
@@ -59,11 +37,6 @@ impl<T> List<T> {
     }
 
     pub fn peek(&self) -> Option<&T> {
-        //        match &self.head {
-        //            None => None,
-        //            Some(node) => Some(&node.val),
-        //        }
-
         self.head.as_ref().map(|node| &node.val)
     }
 }
@@ -93,11 +66,11 @@ impl<T> IntoIterator for List<T> {
     type IntoIter = ListIntoIter<T>;
 
     fn into_iter(self) -> Self::IntoIter {
-        //        let n = ListIntoIter {
-        //            current_head: self.head,
-        //        };
-        //        mem::forget(self);
-        //        n
+        //                let n = ListIntoIter {
+        //                    current_head: self.head,
+        //                };
+        //                mem::forget(self);
+        //                n
         ListIntoIter { current_head: self }
     }
 }
@@ -131,6 +104,12 @@ impl<'a, T> Iterator for ListIter<'a, T> {
     }
 }
 
+#[cfg(test)]
+#[allow(unused)]
+pub struct FuckTp<T> {
+    head: Link<T>,
+}
+
 impl<T> List<T> {
     pub fn iter(&self) -> ListIter<T> {
         ListIter {
@@ -143,6 +122,13 @@ impl<T> List<T> {
             current_iter: self.head.as_mut(),
         }
     }
+
+    #[cfg(test)]
+    pub fn fuck_tp(mut self) -> FuckTp<T> {
+        let head = mem::replace(&mut self.head, None);
+        mem::forget(self);
+        FuckTp { head }
+    }
 }
 
 pub struct ListMutIter<'a, T> {
@@ -153,14 +139,10 @@ impl<'a, T> Iterator for ListMutIter<'a, T> {
     type Item = &'a mut T;
 
     fn next(&mut self) -> Option<&'a mut T> {
-        match self.current_iter.take() {
-            None => None,
-            Some(node) => {
-                self.current_iter = node.next.as_mut();
-                // outlives body
-                Some(&mut node.val)
-            }
-        }
+        self.current_iter.take().map(|node| {
+            self.current_iter = node.next.as_mut();
+            &mut node.val
+        })
     }
 }
 
