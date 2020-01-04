@@ -42,21 +42,29 @@ impl<T> List<T> {
         //                Some(val)
         //            }
         //        }
+
+        //        match mem::replace(&mut self.head, None) {
+        //            None => None,
+        //            Some(node) => {
+        //                self.head = node.next;
+        //                Some(node.val)
+        //            }
+        //        }
+
         // operation with head.
-        match mem::replace(&mut self.head, None) {
-            None => None,
-            Some(node) => {
-                self.head = node.next;
-                Some(node.val)
-            }
-        }
+        mem::replace(&mut self.head, None).map(|node| {
+            self.head = node.next;
+            node.val
+        })
     }
 
     pub fn peek(&self) -> Option<&T> {
-        match &self.head {
-            None => None,
-            Some(node) => Some(&node.val),
-        }
+        //        match &self.head {
+        //            None => None,
+        //            Some(node) => Some(&node.val),
+        //        }
+
+        self.head.as_ref().map(|node| &node.val)
     }
 }
 
@@ -102,14 +110,24 @@ impl<'a, T> Iterator for ListIter<'a, T> {
     type Item = &'a T;
 
     fn next(&mut self) -> Option<Self::Item> {
-        match self.current_iter {
-            None => None,
-            Some(node) => {
-                let v = Some(&node.val);
-                self.current_iter = &node.next;
-                v
-            }
-        }
+        //        match self.current_iter {
+        //            None => None,
+        //            Some(node) => {
+        //                let v = Some(&node.val);
+        //                self.current_iter = &node.next;
+        //                v
+        //            }
+        //        }
+
+        //        self.current_iter.map(|node| {
+        //            self.current_iter = &node.next;
+        //            &node.val
+        //        })
+
+        self.current_iter.as_ref().map(|node| {
+            self.current_iter = &node.next;
+            &node.val
+        })
     }
 }
 
@@ -182,6 +200,50 @@ mod test {
             assert_eq!(l.peek().map(|v: &i32| v.to_owned()), to_cmp);
             to_cmp = Some(i);
             l.push(i);
+        }
+    }
+
+    #[test]
+    fn test_iter() {
+        let build_init = || {
+            let mut l = List::default();
+            for i in 0..10 {
+                l.push(i);
+            }
+            l
+        };
+
+        {
+            let mut cnt = 9;
+            for i in build_init() {
+                assert_eq!(i, cnt);
+                cnt -= 1;
+            }
+        }
+
+        {
+            let mut cnt = 9;
+            let init = build_init();
+            for i in init.iter() {
+                assert_eq!(i, &cnt);
+                cnt -= 1;
+            }
+        }
+
+        {
+            let mut cnt = 9;
+            let mut init = build_init();
+            for i in init.iter_mut() {
+                assert_eq!(i, &cnt);
+                cnt -= 1;
+                *i += 10;
+            }
+
+            let mut cnt = 19;
+            for i in init {
+                assert_eq!(i, cnt);
+                cnt -= 1;
+            }
         }
     }
 }
