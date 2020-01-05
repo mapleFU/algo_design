@@ -1,4 +1,5 @@
 use std::marker::PhantomData;
+use std::mem;
 use std::ptr::NonNull;
 use std::sync::atomic;
 use std::sync::atomic::Ordering;
@@ -50,18 +51,19 @@ impl<T: Default> List<T> {
     }
 }
 
-impl<T: Default> ThreadSafeQueue<T> for List<T> {
+impl<T> ThreadSafeQueue<T> for List<T> {
     fn push_back(&self, obj: T) {
         let mut tail = self.tail.lock().unwrap();
-
-        let new_node = Box::new(Node::new(T::default()));
-        let new_node = Some(Box::into_raw_non_null(new_node));
 
         unsafe {
             // old tail
             let t = tail.as_mut().unwrap();
 
-            (*(t.as_ptr())).val = obj;
+            let origin = mem::replace(&mut (*(t.as_ptr())).val, obj);
+
+            let new_node = Box::new(Node::new(origin));
+            let new_node = Some(Box::into_raw_non_null(new_node));
+
             (*(t.as_ptr())).next = new_node;
 
             *tail = new_node;
@@ -100,6 +102,12 @@ impl<T: Default> ThreadSafeQueue<T> for List<T> {
 
     fn len(&self) -> usize {
         self.size.load(Ordering::SeqCst)
+    }
+}
+
+impl<T> Drop for List<T> {
+    fn drop(&mut self) {
+        while let Some(_) = self.pop_front() {}
     }
 }
 
