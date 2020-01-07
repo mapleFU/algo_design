@@ -1,5 +1,7 @@
 use std::collections::LinkedList;
-use std::sync::atomic::AtomicPtr;
+use std::ptr;
+use std::ptr::{null_mut, NonNull};
+use std::sync::atomic::{AtomicPtr, Ordering};
 use std::sync::{Condvar, Mutex, MutexGuard};
 
 /// `Stack` is a trait for stack, user can push pop in this stack.
@@ -87,25 +89,72 @@ impl<T: Copy> Stack<T> for CondStack<T> {
     }
 }
 
+/// This stack is a basic implemention, it will cause memory leak,
+/// cause `Node` cannot manage it's memory efficiency.
 pub struct AtomicStack<T> {
-    head: AtomicLink<T>,
+    head: AtomicPtr<Node<T>>,
 }
 
-pub struct AtomicNode<T> {
+/// Node is an object saving values.
+/// `Node` doesn't manages any
+pub struct Node<T> {
     val: T,
-    next: AtomicLink<T>,
+    /// Well, maybe I can use NonNull<Option>?
+    next: *mut Node<T>,
 }
 
-impl<T> AtomicNode<T> {
+impl<T> Node<T> {
     pub fn new(obj: T) -> Self {
-        AtomicNode {
-            next: Default::default(),
+        Node {
+            next: null_mut(),
             val: obj,
         }
     }
 }
 
-pub type AtomicLink<T> = AtomicPtr<AtomicNode<T>>;
+impl<T> Stack<T> for AtomicStack<T> {
+    fn push(&self, obj: T) {
+        let new_node: NonNull<Node<T>> = Box::into_raw_non_null(Box::new(Node::new(obj)));
+
+        loop {
+            let old_head = self.head.load(Ordering::Relaxed);
+            unsafe {
+                (*(new_node.as_ptr())).next = old_head;
+            }
+            if self
+                .head
+                .compare_and_swap(old_head, new_node.as_ptr(), Ordering::Release)
+                == old_head
+            {
+                return;
+            }
+        }
+    }
+
+    fn empty(&self) -> bool {
+        let head = self.head.load(Ordering::Acquire);
+        return head == null_mut();
+    }
+
+    fn pop(&self) -> Option<T> {
+        loop {
+            // take a snapshot
+            let head = self.head.load(Ordering::Acquire);
+            if head == null_mut() {
+                return None;
+            } else {
+                let next = unsafe { (*head).next };
+
+                // if snapshot is still good, update from `head` to `next`
+                if self.head.compare_and_swap(head, next, Ordering::Release) == head {
+                    // extract out the data from the now-unlinked node
+                    // **NOTE**: leaks the node!
+                    return Some(unsafe { ptr::read(&(*head).val) });
+                }
+            }
+        }
+    }
+}
 
 #[cfg(test)]
 mod test {
