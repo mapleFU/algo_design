@@ -1,4 +1,5 @@
 use std::collections::LinkedList;
+use std::sync::atomic::AtomicPtr;
 use std::sync::{Condvar, Mutex, MutexGuard};
 
 /// `Stack` is a trait for stack, user can push pop in this stack.
@@ -85,6 +86,26 @@ impl<T: Copy> Stack<T> for CondStack<T> {
         }
     }
 }
+
+pub struct AtomicStack<T> {
+    head: AtomicLink<T>,
+}
+
+pub struct AtomicNode<T> {
+    val: T,
+    next: AtomicLink<T>,
+}
+
+impl<T> AtomicNode<T> {
+    pub fn new(obj: T) -> Self {
+        AtomicNode {
+            next: Default::default(),
+            val: obj,
+        }
+    }
+}
+
+pub type AtomicLink<T> = AtomicPtr<AtomicNode<T>>;
 
 #[cfg(test)]
 mod test {
