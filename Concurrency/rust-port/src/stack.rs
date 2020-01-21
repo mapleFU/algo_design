@@ -2,7 +2,8 @@ use std::collections::LinkedList;
 use std::ptr;
 use std::ptr::{null_mut, NonNull};
 use std::sync::atomic::{AtomicPtr, Ordering};
-use std::sync::{Condvar, Mutex, MutexGuard};
+use std::sync::{Condvar, Mutex, MutexGuard, Arc};
+use std::rc::Rc;
 
 /// `Stack` is a trait for stack, user can push pop in this stack.
 pub trait Stack<T> {
