@@ -1,19 +1,56 @@
+use std::collections::VecDeque;
 use std::marker::PhantomData;
 use std::mem;
 use std::ptr::NonNull;
-use std::sync::atomic;
 use std::sync::atomic::Ordering;
 use std::sync::Mutex;
+use std::sync::{atomic, Condvar};
 
 pub trait ThreadSafeQueue<T> {
     fn push_back(&self, obj: T);
     fn pop_front_wait(&self) -> T;
     fn pop_front(&self) -> Option<T>;
-    fn empty(&self) -> bool;
     fn len(&self) -> usize;
 
     fn is_empty(&self) -> bool {
         self.len() == 0
+    }
+}
+
+//unsafe impl<T> Sync for ThreadSafeQueue<T> {}
+unsafe impl<T> Sync for NaiveMutexDeque<T> {}
+
+pub struct NaiveMutexDeque<T> {
+    deque: Mutex<VecDeque<T>>,
+    cond: Condvar,
+}
+
+impl<T> Default for NaiveMutexDeque<T> {
+    fn default() -> Self {
+        NaiveMutexDeque {
+            deque: Default::default(),
+            cond: Condvar::default(),
+        }
+    }
+}
+
+impl<T> ThreadSafeQueue<T> for NaiveMutexDeque<T> {
+    fn push_back(&self, obj: T) {
+        self.deque.lock().unwrap().push_back(obj);
+    }
+
+    fn pop_front_wait(&self) -> T {
+        let mux = self.deque.lock().unwrap();
+        let m = self.cond.wait_until(mux, |mu| !mu.is_empty());
+        m.unwrap().pop_front().unwrap()
+    }
+
+    fn pop_front(&self) -> Option<T> {
+        self.deque.lock().unwrap().pop_front()
+    }
+
+    fn len(&self) -> usize {
+        self.deque.lock().unwrap().len()
     }
 }
 
@@ -104,10 +141,6 @@ impl<T> ThreadSafeQueue<T> for List<T> {
             *head = (*h).next;
             Some((*h).val)
         }
-    }
-
-    fn empty(&self) -> bool {
-        self.len() == 0
     }
 
     fn len(&self) -> usize {

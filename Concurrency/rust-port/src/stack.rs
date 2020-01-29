@@ -80,11 +80,11 @@ impl<T: Copy> Stack<T> for CondStack<T> {
         let mut entity: MutexGuard<LinkedList<T>> = result.unwrap();
 
         if !entity.is_empty() {
-            return entity.pop_back().unwrap();
+            entity.pop_back().unwrap()
         } else {
             let e = self.cond.wait_until(entity, |cfg| !cfg.is_empty());
             entity = e.unwrap();
-            return entity.pop_back().unwrap();
+            entity.pop_back().unwrap()
         }
     }
 }
