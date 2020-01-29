@@ -5,7 +5,10 @@
 #![feature(unboxed_closures)]
 #![feature(mem_take)]
 
+extern crate crossbeam;
 extern crate num_cpus;
+#[macro_use]
+extern crate log;
 
 pub mod queue;
 pub mod stack;
