@@ -163,7 +163,7 @@ mod test {
         let l = List::new();
         let bound = 100;
 
-        assert!(l.empty());
+        assert!(l.is_empty());
 
         for i in 0..bound {
             l.push_back(i);

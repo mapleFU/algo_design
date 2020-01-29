@@ -2,6 +2,8 @@
 #![feature(wait_until)]
 #![feature(dropck_eyepatch)]
 #![feature(never_type)]
+#![feature(unboxed_closures)]
+#![feature(mem_take)]
 
 extern crate num_cpus;
 
