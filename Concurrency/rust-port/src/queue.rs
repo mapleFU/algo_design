@@ -11,6 +11,10 @@ pub trait ThreadSafeQueue<T> {
     fn pop_front(&self) -> Option<T>;
     fn empty(&self) -> bool;
     fn len(&self) -> usize;
+
+    fn is_empty(&self) -> bool {
+        self.len() == 0
+    }
 }
 
 pub struct Node<T> {
@@ -37,8 +41,8 @@ pub struct List<T> {
     _marker: PhantomData<Box<Option<T>>>,
 }
 
-impl<T: Default> List<T> {
-    pub fn new() -> Self {
+impl<T: Default> Default for List<T> {
+    fn default() -> Self {
         let v = T::default();
         let virtual_node = Box::new(Node::new(v));
         let node = Box::into_raw_non_null(virtual_node);
@@ -48,6 +52,12 @@ impl<T: Default> List<T> {
             size: atomic::AtomicUsize::new(0),
             _marker: Default::default(),
         }
+    }
+}
+
+impl<T: Default> List<T> {
+    pub fn new() -> Self {
+        Self::default()
     }
 }
 

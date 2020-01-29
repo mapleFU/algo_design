@@ -82,7 +82,7 @@ impl<T: Copy> Stack<T> for CondStack<T> {
         if !entity.is_empty() {
             return entity.pop_back().unwrap();
         } else {
-            let e = self.cond.wait_until(entity, |cfg| cfg.len() > 0);
+            let e = self.cond.wait_until(entity, |cfg| !cfg.is_empty());
             entity = e.unwrap();
             return entity.pop_back().unwrap();
         }
@@ -133,14 +133,14 @@ impl<T> Stack<T> for AtomicStack<T> {
 
     fn empty(&self) -> bool {
         let head = self.head.load(Ordering::Acquire);
-        return head == null_mut();
+        head.is_null()
     }
 
     fn pop(&self) -> Option<T> {
         loop {
             // take a snapshot
             let head = self.head.load(Ordering::Acquire);
-            if head == null_mut() {
+            if head.is_null() {
                 return None;
             } else {
                 let next = unsafe { (*head).next };
