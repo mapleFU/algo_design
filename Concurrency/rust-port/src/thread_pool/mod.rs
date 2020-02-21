@@ -1,6 +1,10 @@
 pub mod crossbeam_channel_pool;
 pub mod simple_thread_pool;
 
+use std::sync::mpsc::channel;
+use std::sync::Arc;
+use std::thread::sleep;
+
 /// The trait that all thread pools should implement.
 pub trait ThreadPool {
     /// Creates a new thread pool, immediately spawning the specified number of

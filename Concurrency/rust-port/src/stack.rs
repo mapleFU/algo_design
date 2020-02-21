@@ -11,10 +11,6 @@ pub trait Stack<T> {
     fn empty(&self) -> bool;
 
     fn pop(&self) -> Option<T>;
-
-    fn pop_wait(&self) -> T {
-        unimplemented!()
-    }
 }
 
 macro_rules! impl_sync {
@@ -53,6 +49,21 @@ impl<T: Copy> Stack<T> for LockStack<T> {
     }
 }
 
+impl<T> CondStack<T> {
+    fn pop_wait(&self) -> T {
+        let result = self.guard.guard.lock();
+        let mut entity: MutexGuard<LinkedList<T>> = result.unwrap();
+
+        if !entity.is_empty() {
+            entity.pop_back().unwrap()
+        } else {
+            let e = self.cond.wait_until(entity, |cfg| !cfg.is_empty());
+            entity = e.unwrap();
+            entity.pop_back().unwrap()
+        }
+    }
+}
+
 #[derive(Default)]
 pub struct CondStack<T> {
     guard: LockStack<T>,
@@ -74,22 +85,9 @@ impl<T: Copy> Stack<T> for CondStack<T> {
     fn pop(&self) -> Option<T> {
         self.guard.pop()
     }
-
-    fn pop_wait(&self) -> T {
-        let result = self.guard.guard.lock();
-        let mut entity: MutexGuard<LinkedList<T>> = result.unwrap();
-
-        if !entity.is_empty() {
-            entity.pop_back().unwrap()
-        } else {
-            let e = self.cond.wait_until(entity, |cfg| !cfg.is_empty());
-            entity = e.unwrap();
-            entity.pop_back().unwrap()
-        }
-    }
 }
 
-/// This stack is a basic implemention, it will cause memory leak,
+/// This stack is a basic implement, it will cause memory leak,
 /// cause `Node` cannot manage it's memory efficiency.
 pub struct AtomicStack<T> {
     head: AtomicPtr<Node<T>>,
@@ -114,13 +112,21 @@ impl<T> Node<T> {
 
 impl<T> Stack<T> for AtomicStack<T> {
     fn push(&self, obj: T) {
+        // create a node
         let new_node: NonNull<Node<T>> = Box::into_raw_non_null(Box::new(Node::new(obj)));
 
         loop {
+            // load head
             let old_head = self.head.load(Ordering::Relaxed);
+            // set next
             unsafe {
                 (*(new_node.as_ptr())).next = old_head;
             }
+
+            // compare_exchange takes (T& expected, T val, memory_order) -> bool;
+            // compare_and_swap takes (&self, current, new, order) -> T;
+            //    if success, self == current => self == new => return previous value (old_head)
+            //    if failed, return the old value.
             if self
                 .head
                 .compare_and_swap(old_head, new_node.as_ptr(), Ordering::Release)
