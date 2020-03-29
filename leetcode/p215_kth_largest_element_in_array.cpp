@@ -99,14 +99,67 @@ class Solution {
     }
 };
 
+class NaiveKthFind {
+    // [begin, end)
+    int partition(vector<int>& nums, int begin, int end) {
+        assert(end > begin);
+        std::swap(nums[begin], nums[rand() % (end - begin) + begin]);
+        int pivot = nums[begin];
+        int left(begin), right(end - 1);
+        while (left < right) {
+            while (left < right) {
+                if (nums[right] > pivot)
+                    --right;
+                else {
+                    nums[left++] = nums[right];
+                    break;
+                }
+            }
+
+            // protect range
+            while (left < right) {
+                if (nums[left] <= pivot)
+                    ++left;
+                else {
+                    nums[right--] = nums[left];
+                    break;
+                }
+            }
+        }
+        assert(left == right);
+        nums[left] = pivot;
+        return left;
+    }
+public:
+    int findKthLargest(vector<int>& nums, int k) {
+        int left(0), right(nums.size());
+        k = nums.size() - k;
+        while (true) {
+            int pivot_pos = partition(nums, left, right);
+            if (pivot_pos == k) {
+                return nums[pivot_pos];
+            } else if (pivot_pos > k) {
+                right = pivot_pos;
+            } else {
+                left = pivot_pos + 1;
+            }
+        }
+    }
+};
+
 int main() {
     Solution soln;
+    NaiveKthFind soln3;
+
     vector<int> test_vec{3, 2, 1, 5, 6, 4};
     cout << soln.findKthLargest(test_vec, 2) << '\n';
-
+    test_vec = {3, 2, 1, 5, 6, 4};
+    cout << soln3.findKthLargest(test_vec, 2) << '\n';
     // 1 2 2 3 3 4 5 5 6
     test_vec = {3, 2, 3, 1, 2, 4, 5, 5, 6};
     cout << soln.findKthLargest(test_vec, 4) << '\n';
+    test_vec = {3, 2, 3, 1, 2, 4, 5, 5, 6};
+    cout << soln3.findKthLargest(test_vec, 4) << '\n';
 
     test_vec = {1};
     cout << soln.findKthLargest(test_vec, 1) << '\n';
@@ -124,5 +177,7 @@ int main() {
 
     ConcurrencySolution<int > soln2;
     cout << soln.findKthLargest(test_vec, 2) << '\n';
+
+
 }
 

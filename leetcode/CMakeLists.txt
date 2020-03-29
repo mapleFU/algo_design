@@ -145,4 +145,6 @@ add_executable(merge-two-binary-trees p617_merge_two_binary_trees.cpp)
 
 add_executable(counting-bits p338_counting_bits.cpp)
 
+add_executable(new-21-game p837_new_21_game.cpp)
+
 add_subdirectory(concurrency)
