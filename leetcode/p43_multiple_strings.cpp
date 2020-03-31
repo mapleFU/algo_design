@@ -8,7 +8,7 @@
 using namespace std;
 
 class Solution {
-    void strip_0(string &s) {
+    void strip_left_0(string &s) {
         size_t i = 0;
         for (; i < s.size(); ++i) {
             if (s[i] != '0') {
@@ -48,12 +48,14 @@ class Solution {
         vector<int> result;
         for (size_t s_short_index = 0; s_short_index < s_short.size();
              ++s_short_index) {
-            // s-short 的值 (INT)
+            // s-short 的值 (INT), 因为实际和字符串顺序是相反的，所以需要 load_cnt.
             int short_cnt = load_cnt(s_short, s_short_index);
-            // 长度改造成 s_long 的长度
+            // 长度改造成 s_long + s_short_index 的长度, 原本是 result {1}, 然后补充成 {1, 0, 0}
+            //  result 是反向排列的。
             expand(result, s_short_index + s_long.size() - 1);
             for (size_t s_long_index = 0; s_long_index < s_long.size();
                  ++s_long_index) {
+                // 乘法，添加
                 int current = load_cnt(s_long, s_long_index) * short_cnt;
                 set_cnt(result, s_long_index + s_short_index) += current;
             }
@@ -64,7 +66,6 @@ class Solution {
                 set_cnt(result, i) = current % 10;
                 carry = current / 10;
             }
-
             while (carry != 0) {
                 result.push_back(0);
                 set_cnt(result, r_size) = carry % 10;
@@ -81,8 +82,8 @@ class Solution {
 
   public:
     string multiply(string num1, string num2) {
-        strip_0(num1);
-        strip_0(num2);
+        strip_left_0(num1);
+        strip_left_0(num2);
         if (num1.size() == 0 || num2.size() == 0) {
             return "0";
         }

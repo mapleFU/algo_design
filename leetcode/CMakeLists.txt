@@ -148,4 +148,6 @@ add_executable(counting-bits p338_counting_bits.cpp)
 
 add_executable(new-21-game p837_new_21_game.cpp)
 
+add_executable(target-sum p494_target_sum.cpp)
+
 add_subdirectory(concurrency)
