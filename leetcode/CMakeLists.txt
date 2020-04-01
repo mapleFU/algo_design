@@ -150,4 +150,8 @@ add_executable(new-21-game p837_new_21_game.cpp)
 
 add_executable(target-sum p494_target_sum.cpp)
 
+add_executable(perfect-squares p279_perfect_squares.cpp)
+
+add_executable(queue-reconstruction-by-height p406_queue_reconstruction_by_height.cpp)
+
 add_subdirectory(concurrency)

@@ -39,3 +39,8 @@ void print_perms(const std::vector<std::vector<VecT>> &perms) {
         print_perms(perms[i]);
     }
 }
+
+template <typename T>
+void println(const T& v) {
+    std::cout << v << '\n';
+}
